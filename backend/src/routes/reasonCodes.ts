@@ -2,11 +2,20 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 import { db } from '../db/index.js'
-import { reason_codes, alerts, audit_events } from '../db/schema.js'
+import { reason_codes, alerts, audit_events, workspace_members } from '../db/schema.js'
 import { eq, and, desc } from 'drizzle-orm'
 import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
+
+async function isMember(workspaceId: string, userId: string): Promise<boolean> {
+  if (!workspaceId || !userId) return false
+  const [m] = await db
+    .select()
+    .from(workspace_members)
+    .where(and(eq(workspace_members.workspace_id, workspaceId), eq(workspace_members.user_id, userId)))
+  return !!m
+}
 
 const reasonCodeSchema = z.object({
   workspace_id: z.string().min(1),
@@ -32,10 +41,13 @@ const REPRESENTED_STATUSES = new Set(['represented'])
 
 // ── Routes ──────────────────────────────────────────────────────────────────
 
-// Public: list reason codes for a workspace
-router.get('/', async (c) => {
+// Auth: list reason codes for a workspace
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const rows = await db
     .select()
     .from(reason_codes)
@@ -44,10 +56,13 @@ router.get('/', async (c) => {
   return c.json(rows)
 })
 
-// Public: per-reason-code alert counts / dispositions
-router.get('/stats', async (c) => {
+// Auth: per-reason-code alert counts / dispositions
+router.get('/stats', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const codes = await db
     .select()

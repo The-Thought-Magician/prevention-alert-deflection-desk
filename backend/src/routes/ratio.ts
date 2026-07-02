@@ -106,11 +106,14 @@ async function computeCurrent(workspaceId: string): Promise<{
   }
 }
 
-// ── GET /current — public ──────────────────────────────────────────────────
+// ── GET /current — auth required ───────────────────────────────────────────
 
-router.get('/current', async (c) => {
+router.get('/current', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const { overall, byNetwork } = await computeCurrent(workspaceId)
 
@@ -142,15 +145,18 @@ router.get('/current', async (c) => {
   })
 })
 
-// ── GET /projection — public ───────────────────────────────────────────────
+// ── GET /projection — auth required ────────────────────────────────────────
 // Projected end-of-period ratio under the current decision mix. Deflecting an
 // open alert removes it from the chargeback count; representing/lapsing keeps
 // it. We measure the realized deflection rate so far and apply it to open
 // alerts to project where the ratio lands by period end.
 
-router.get('/projection', async (c) => {
+router.get('/projection', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const { overall, byNetwork } = await computeCurrent(workspaceId)
   const allAlerts = await db
@@ -225,11 +231,14 @@ router.get('/projection', async (c) => {
   })
 })
 
-// ── GET /snapshots — public ────────────────────────────────────────────────
+// ── GET /snapshots — auth required ─────────────────────────────────────────
 
-router.get('/snapshots', async (c) => {
+router.get('/snapshots', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const network = c.req.query('network')
 
   const conds = [eq(ratio_snapshots.workspace_id, workspaceId)]

@@ -2,11 +2,20 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 import { db } from '../db/index.js'
-import { rule_sets, alerts, customers, audit_events } from '../db/schema.js'
+import { rule_sets, alerts, customers, audit_events, workspace_members } from '../db/schema.js'
 import { eq, and, desc } from 'drizzle-orm'
 import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
+
+async function isMember(workspaceId: string, userId: string): Promise<boolean> {
+  if (!workspaceId || !userId) return false
+  const [m] = await db
+    .select()
+    .from(workspace_members)
+    .where(and(eq(workspace_members.workspace_id, workspaceId), eq(workspace_members.user_id, userId)))
+  return !!m
+}
 
 const ruleSetSchema = z.object({
   workspace_id: z.string().min(1),
@@ -111,10 +120,13 @@ export { scoreAlert, DEFAULT_WEIGHTS, DEFAULT_THRESHOLDS, DEFLECTABLE_CATEGORIES
 
 // ── Routes ──────────────────────────────────────────────────────────────────
 
-// Public: list rule sets for a workspace
-router.get('/', async (c) => {
+// Auth: list rule sets for a workspace
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const rows = await db
     .select()
     .from(rule_sets)
@@ -123,10 +135,13 @@ router.get('/', async (c) => {
   return c.json(rows)
 })
 
-// Public: get one rule set
-router.get('/:id', async (c) => {
+// Auth: get one rule set
+router.get('/:id', authMiddleware, async (c) => {
   const [rs] = await db.select().from(rule_sets).where(eq(rule_sets.id, c.req.param('id')))
   if (!rs) return c.json({ error: 'Not found' }, 404)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(rs.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
   return c.json(rs)
 })
 

@@ -3,6 +3,7 @@ import { db } from '../db/index.js'
 import { subscriptions, plans } from '../db/schema.js'
 import { eq } from 'drizzle-orm'
 import Stripe from 'stripe'
+import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
 
@@ -26,15 +27,17 @@ async function getUserSubscription(userId: string) {
   return created
 }
 
-router.get('/plan', async (c) => {
-  const userId = c.req.header('x-user-id') ?? 'anonymous'
+router.get('/plan', authMiddleware, async (c) => {
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
   const sub = await getUserSubscription(userId)
   const plan = await db.query.plans.findFirst({ where: eq(plans.id, sub.plan_id) })
   return c.json({ subscription: sub, plan, stripeEnabled: STRIPE_ENABLED })
 })
 
-router.post('/checkout', async (c) => {
-  const userId = c.req.header('x-user-id') ?? 'anonymous'
+router.post('/checkout', authMiddleware, async (c) => {
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
   const stripe = getStripe()
   if (!stripe) return c.json({ error: 'Billing not configured' }, 503)
   const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:3000'
@@ -53,8 +56,9 @@ router.post('/checkout', async (c) => {
   return c.json({ url: session.url })
 })
 
-router.post('/portal', async (c) => {
-  const userId = c.req.header('x-user-id') ?? 'anonymous'
+router.post('/portal', authMiddleware, async (c) => {
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
   const stripe = getStripe()
   if (!stripe) return c.json({ error: 'Billing not configured' }, 503)
   const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:3000'

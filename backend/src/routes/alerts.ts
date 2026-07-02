@@ -135,9 +135,12 @@ async function logAudit(
 
 // ── GET / — list alerts with filters ────────────────────────────────────────
 
-router.get('/', async (c) => {
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const network = c.req.query('network')
   const status = c.req.query('status')
@@ -173,10 +176,13 @@ router.get('/', async (c) => {
 
 // ── GET /:id — detail incl. decision, order, audit ───────────────────────────
 
-router.get('/:id', async (c) => {
+router.get('/:id', authMiddleware, async (c) => {
   const id = c.req.param('id')
   const [alert] = await db.select().from(alerts).where(eq(alerts.id, id))
   if (!alert) return c.json({ error: 'Not found' }, 404)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(alert.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const [decision] = await db
     .select()

@@ -11,16 +11,29 @@ import {
   ratio_snapshots,
   thresholds,
   audit_events,
+  workspace_members,
 } from '../db/schema.js'
 import { eq, and, desc } from 'drizzle-orm'
 import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
 
+async function isMember(workspaceId: string, userId: string): Promise<boolean> {
+  if (!workspaceId || !userId) return false
+  const [m] = await db
+    .select()
+    .from(workspace_members)
+    .where(and(eq(workspace_members.workspace_id, workspaceId), eq(workspace_members.user_id, userId)))
+  return !!m
+}
+
 // ── GET / ─ list generated reports ───────────────────────────────────────────
-router.get('/', async (c) => {
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const rows = await db
     .select()
@@ -32,9 +45,12 @@ router.get('/', async (c) => {
 })
 
 // ── GET /:id ─ report detail ─────────────────────────────────────────────────
-router.get('/:id', async (c) => {
+router.get('/:id', authMiddleware, async (c) => {
   const [r] = await db.select().from(reports).where(eq(reports.id, c.req.param('id')))
   if (!r) return c.json({ error: 'Not found' }, 404)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(r.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
   return c.json(r)
 })
 
@@ -266,9 +282,12 @@ function csvEscape(s: string): string {
   return s
 }
 
-router.get('/:id/export', async (c) => {
+router.get('/:id/export', authMiddleware, async (c) => {
   const [r] = await db.select().from(reports).where(eq(reports.id, c.req.param('id')))
   if (!r) return c.json({ error: 'Not found' }, 404)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(r.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const format = (c.req.query('format') ?? 'json').toLowerCase()
 

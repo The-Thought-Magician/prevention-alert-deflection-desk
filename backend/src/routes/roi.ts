@@ -1,10 +1,19 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
-import { savings_records, alerts } from '../db/schema.js'
-import { eq, desc } from 'drizzle-orm'
-import { getUserId } from '../lib/auth.js'
+import { savings_records, alerts, workspace_members } from '../db/schema.js'
+import { eq, and, desc } from 'drizzle-orm'
+import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
+
+async function isMember(workspaceId: string, userId: string): Promise<boolean> {
+  if (!workspaceId || !userId) return false
+  const [m] = await db
+    .select()
+    .from(workspace_members)
+    .where(and(eq(workspace_members.workspace_id, workspaceId), eq(workspace_members.user_id, userId)))
+  return !!m
+}
 
 function monthKey(d: Date | string | null): string {
   if (!d) return 'unknown'
@@ -14,9 +23,12 @@ function monthKey(d: Date | string | null): string {
 }
 
 // ── GET /summary ─ chargebacks avoided, fines averted, exposure, net savings ─
-router.get('/summary', async (c) => {
+router.get('/summary', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const records = await db
     .select()
@@ -51,9 +63,12 @@ router.get('/summary', async (c) => {
 })
 
 // ── GET /records ─ savings records list ──────────────────────────────────────
-router.get('/records', async (c) => {
+router.get('/records', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const records = await db
     .select()
@@ -65,9 +80,12 @@ router.get('/records', async (c) => {
 })
 
 // ── GET /trend ─ net savings trend over time, per network ────────────────────
-router.get('/trend', async (c) => {
+router.get('/trend', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const records = await db
     .select()

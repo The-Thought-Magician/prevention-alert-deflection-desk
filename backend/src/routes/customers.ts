@@ -62,10 +62,13 @@ const updateSchema = z.object({
 
 // ── routes ───────────────────────────────────────────────────────────────────
 
-// Public: list customers for a workspace.
-router.get('/', async (c) => {
+// Auth: list customers for a workspace.
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const rows = await db
     .select()
     .from(customers)
@@ -74,11 +77,14 @@ router.get('/', async (c) => {
   return c.json(rows)
 })
 
-// Public: risk profile (orders, alerts, refunds, aggregated stats).
-router.get('/:id', async (c) => {
+// Auth: risk profile (orders, alerts, refunds, aggregated stats).
+router.get('/:id', authMiddleware, async (c) => {
   const id = c.req.param('id')
   const [customer] = await db.select().from(customers).where(eq(customers.id, id))
   if (!customer) return c.json({ error: 'Not found' }, 404)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(customer.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const custOrders = await db
     .select()

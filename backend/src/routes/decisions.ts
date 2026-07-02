@@ -181,9 +181,12 @@ async function loadContext(alert: typeof alerts.$inferSelect) {
 
 // ── GET / — decision history ─────────────────────────────────────────────────
 
-router.get('/', async (c) => {
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const rows = await db
     .select()
     .from(decisions)
@@ -194,7 +197,7 @@ router.get('/', async (c) => {
 
 // ── GET /alert/:alertId — latest decision for an alert ───────────────────────
 
-router.get('/alert/:alertId', async (c) => {
+router.get('/alert/:alertId', authMiddleware, async (c) => {
   const alertId = c.req.param('alertId')
   const [latest] = await db
     .select()
@@ -202,6 +205,11 @@ router.get('/alert/:alertId', async (c) => {
     .where(eq(decisions.alert_id, alertId))
     .orderBy(desc(decisions.created_at))
     .limit(1)
+  if (latest) {
+    const userId = getUserId(c)
+    if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+    if (!(await isMember(latest.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
+  }
   if (!latest) return c.json({ error: 'Not found' }, 404)
   return c.json(latest)
 })

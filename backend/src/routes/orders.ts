@@ -64,10 +64,13 @@ function toRow(body: z.infer<typeof orderSchema>, userId: string) {
 
 // ── routes ───────────────────────────────────────────────────────────────────
 
-// Public: list orders for a workspace.
-router.get('/', async (c) => {
+// Auth: list orders for a workspace.
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const rows = await db
     .select()
     .from(orders)
@@ -76,11 +79,14 @@ router.get('/', async (c) => {
   return c.json(rows)
 })
 
-// Public: order detail with linked alerts + refunds.
-router.get('/:id', async (c) => {
+// Auth: order detail with linked alerts + refunds.
+router.get('/:id', authMiddleware, async (c) => {
   const id = c.req.param('id')
   const [order] = await db.select().from(orders).where(eq(orders.id, id))
   if (!order) return c.json({ error: 'Not found' }, 404)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(order.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
   const linkedAlerts = await db
     .select()
     .from(alerts)

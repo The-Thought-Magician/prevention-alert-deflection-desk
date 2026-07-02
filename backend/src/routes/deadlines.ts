@@ -1,9 +1,19 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
-import { alerts } from '../db/schema.js'
+import { alerts, workspace_members } from '../db/schema.js'
 import { and, eq, asc, inArray, isNotNull } from 'drizzle-orm'
+import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
+
+async function isMember(workspaceId: string, userId: string): Promise<boolean> {
+  if (!workspaceId || !userId) return false
+  const [m] = await db
+    .select()
+    .from(workspace_members)
+    .where(and(eq(workspace_members.workspace_id, workspaceId), eq(workspace_members.user_id, userId)))
+  return !!m
+}
 
 // Alert statuses that are still open / actionable (a deflection refund could
 // still be executed). Once an alert is deflected, represented, or has lapsed to
@@ -43,9 +53,12 @@ function decorate(row: typeof alerts.$inferSelect, now: number) {
 
 // GET /board — open alerts sorted by deadline, grouped into urgency bands.
 // Public read. Requires ?workspace_id=.
-router.get('/board', async (c) => {
+router.get('/board', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const rows = await db
     .select()
@@ -79,9 +92,12 @@ router.get('/board', async (c) => {
 // GET /breaches — open alerts that are past their deadline or within the
 // critical window, i.e. still deflectable but at imminent risk of lapsing.
 // Public read. Requires ?workspace_id=.
-router.get('/breaches', async (c) => {
+router.get('/breaches', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const rows = await db
     .select()

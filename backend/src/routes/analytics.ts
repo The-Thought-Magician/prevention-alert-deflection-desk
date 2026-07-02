@@ -1,10 +1,19 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
-import { alerts, decisions, refunds } from '../db/schema.js'
+import { alerts, decisions, refunds, workspace_members } from '../db/schema.js'
 import { eq, and } from 'drizzle-orm'
-import { getUserId } from '../lib/auth.js'
+import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
+
+async function isMember(workspaceId: string, userId: string): Promise<boolean> {
+  if (!workspaceId || !userId) return false
+  const [m] = await db
+    .select()
+    .from(workspace_members)
+    .where(and(eq(workspace_members.workspace_id, workspaceId), eq(workspace_members.user_id, userId)))
+  return !!m
+}
 
 // Networks and dispositions we track.
 const DISPOSITIONS = [
@@ -30,9 +39,12 @@ function bump(map: Record<string, Record<string, number>>, key: string, period: 
 }
 
 // ── GET /trends ─ alert volume by network/reason/disposition over time ───────
-router.get('/trends', async (c) => {
+router.get('/trends', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const rows = await db.select().from(alerts).where(eq(alerts.workspace_id, workspaceId))
 
@@ -77,9 +89,12 @@ router.get('/trends', async (c) => {
 })
 
 // ── GET /performance ─ deflection/auto-deflection/lapse rates, latency, util ─
-router.get('/performance', async (c) => {
+router.get('/performance', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const [alertRows, decisionRows, refundRows] = await Promise.all([
     db.select().from(alerts).where(eq(alerts.workspace_id, workspaceId)),

@@ -1,17 +1,30 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
-import { audit_events } from '../db/schema.js'
+import { audit_events, workspace_members } from '../db/schema.js'
 import { and, eq, desc, gte, lte, type SQL } from 'drizzle-orm'
+import { authMiddleware, getUserId } from '../lib/auth.js'
 
 const router = new Hono()
 
+async function isMember(workspaceId: string, userId: string): Promise<boolean> {
+  if (!workspaceId || !userId) return false
+  const [m] = await db
+    .select()
+    .from(workspace_members)
+    .where(and(eq(workspace_members.workspace_id, workspaceId), eq(workspace_members.user_id, userId)))
+  return !!m
+}
+
 // GET / — immutable audit event log for a workspace, newest first, filterable.
-// Public read. Required: ?workspace_id=.
+// Auth required. Required: ?workspace_id=.
 // Optional filters: actor, entity_type, entity_id, action, from (ISO), to (ISO),
 // and limit (default 200, max 1000).
-router.get('/', async (c) => {
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id is required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
 
   const actor = c.req.query('actor')
   const entityType = c.req.query('entity_type')

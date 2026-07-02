@@ -68,9 +68,12 @@ async function fineAvertedCents(workspaceId: string, network: string): Promise<n
 
 // ── GET / — refund ledger ─────────────────────────────────────────────────────
 
-router.get('/', async (c) => {
+router.get('/', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const rows = await db
     .select()
     .from(refunds)
@@ -81,9 +84,13 @@ router.get('/', async (c) => {
 
 // ── GET /check — double-refund check for an order ────────────────────────────
 
-router.get('/check', async (c) => {
+router.get('/check', authMiddleware, async (c) => {
   const orderId = c.req.query('order_id')
   if (!orderId) return c.json({ error: 'order_id required' }, 400)
+  const [order] = await db.select().from(orders).where(eq(orders.id, orderId))
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (order && !(await isMember(order.workspace_id, userId))) return c.json({ error: 'Forbidden' }, 403)
   const existing = await db
     .select()
     .from(refunds)
@@ -94,9 +101,12 @@ router.get('/check', async (c) => {
 
 // ── GET /links — ledger links ────────────────────────────────────────────────
 
-router.get('/links', async (c) => {
+router.get('/links', authMiddleware, async (c) => {
   const workspaceId = c.req.query('workspace_id')
   if (!workspaceId) return c.json({ error: 'workspace_id required' }, 400)
+  const userId = getUserId(c)
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401)
+  if (!(await isMember(workspaceId, userId))) return c.json({ error: 'Forbidden' }, 403)
   const rows = await db
     .select()
     .from(refund_ledger_links)
