@@ -317,10 +317,12 @@ export default function AlertDetailPage() {
                     <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
                       <div className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">Scoring factors</div>
                       <div className="grid gap-2 sm:grid-cols-2">
-                        {Object.entries(decision.factors).map(([k, v]) => (
-                          <div key={k} className="flex items-center justify-between text-sm">
-                            <span className="text-slate-400">{k}</span>
-                            <span className="font-mono text-slate-200">{String(v)}</span>
+                        {(Array.isArray(decision.factors) ? decision.factors : []).map((f: any, i: number) => (
+                          <div key={f?.name ?? i} className="flex items-center justify-between text-sm">
+                            <span className="text-slate-400">{f?.name ?? `factor ${i + 1}`}</span>
+                            <span className="font-mono text-slate-200">
+                              {typeof f?.contribution === 'number' ? f.contribution.toFixed(3) : String(f?.value ?? f)}
+                            </span>
                           </div>
                         ))}
                       </div>
