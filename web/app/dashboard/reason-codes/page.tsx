@@ -20,7 +20,7 @@ type ReasonCode = {
   code: string
   description: string
   category: string
-  typical_deflectability: string
+  typical_deflectability: number
   recommended_handling: string
   created_at: string
 }
@@ -40,7 +40,14 @@ type ReasonStat = {
 
 const NETWORKS = ['visa', 'mastercard', 'amex', 'discover']
 const CATEGORIES = ['fraud', 'authorization', 'processing_error', 'consumer_dispute', 'duplicate', 'subscription']
-const DEFLECTABILITY = ['high', 'medium', 'low']
+// typical_deflectability is stored on the backend as a float 0-1 (see backend/src/db/schema.ts).
+// These buckets are display-only labels derived from that number, and the option values below
+// are representative scores used when creating/editing via the bucketed select.
+const DEFLECTABILITY_OPTIONS = [
+  { label: 'high', value: 0.85 },
+  { label: 'medium', value: 0.5 },
+  { label: 'low', value: 0.15 },
+]
 
 function networkTone(n: string): 'blue' | 'amber' | 'green' | 'purple' | 'slate' {
   const k = (n || '').toLowerCase()
@@ -51,11 +58,19 @@ function networkTone(n: string): 'blue' | 'amber' | 'green' | 'purple' | 'slate'
   return 'slate'
 }
 
-function deflectTone(d: string): 'green' | 'amber' | 'red' | 'slate' {
-  const k = (d || '').toLowerCase()
-  if (k === 'high') return 'green'
-  if (k === 'medium') return 'amber'
-  if (k === 'low') return 'red'
+function deflectLabel(d: number | null | undefined): string {
+  const n = typeof d === 'number' ? d : Number(d ?? NaN)
+  if (Number.isNaN(n)) return 'unknown'
+  if (n >= 0.7) return 'high'
+  if (n >= 0.35) return 'medium'
+  return 'low'
+}
+
+function deflectTone(d: number | null | undefined): 'green' | 'amber' | 'red' | 'slate' {
+  const label = deflectLabel(d)
+  if (label === 'high') return 'green'
+  if (label === 'medium') return 'amber'
+  if (label === 'low') return 'red'
   return 'slate'
 }
 
@@ -65,7 +80,7 @@ function blankForm() {
     code: '',
     description: '',
     category: 'consumer_dispute',
-    typical_deflectability: 'medium',
+    typical_deflectability: 0.5,
     recommended_handling: '',
   }
 }
@@ -203,7 +218,7 @@ export default function ReasonCodesPage() {
       code: c.code,
       description: c.description ?? '',
       category: c.category,
-      typical_deflectability: c.typical_deflectability ?? 'medium',
+      typical_deflectability: typeof c.typical_deflectability === 'number' ? c.typical_deflectability : 0.5,
       recommended_handling: c.recommended_handling ?? '',
     })
     setFormError(null)
@@ -420,7 +435,7 @@ export default function ReasonCodesPage() {
                         <span className="text-xs text-slate-400">{c.category}</span>
                       </TD>
                       <TD>
-                        <Badge tone={deflectTone(c.typical_deflectability)}>{c.typical_deflectability}</Badge>
+                        <Badge tone={deflectTone(c.typical_deflectability)}>{deflectLabel(c.typical_deflectability)}</Badge>
                       </TD>
                       <TD className="text-right tabular-nums text-slate-200">{count}</TD>
                       <TD className="text-right tabular-nums text-emerald-300">{defl}</TD>
@@ -512,12 +527,12 @@ export default function ReasonCodesPage() {
               <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Typical deflectability</label>
               <select
                 value={form.typical_deflectability}
-                onChange={(e) => setForm((f) => ({ ...f, typical_deflectability: e.target.value }))}
+                onChange={(e) => setForm((f) => ({ ...f, typical_deflectability: Number(e.target.value) }))}
                 className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
               >
-                {DEFLECTABILITY.map((d) => (
-                  <option key={d} value={d}>
-                    {d}
+                {DEFLECTABILITY_OPTIONS.map((d) => (
+                  <option key={d.label} value={d.value}>
+                    {d.label}
                   </option>
                 ))}
               </select>
