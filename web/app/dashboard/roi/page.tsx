@@ -197,8 +197,8 @@ export default function RoiPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-slate-100">ROI &amp; Savings</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-xl font-semibold text-neutral-100">ROI &amp; Savings</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Chargebacks avoided, fines averted, and reserve exposure reduced through deflection.
           </p>
         </div>
@@ -242,25 +242,25 @@ export default function RoiPage() {
       {/* Trend chart */}
       <Card>
         <CardHeader className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-200">Net savings trend</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Net savings trend</h2>
           <Badge tone="green">{money(recordTotals.net)} in view</Badge>
         </CardHeader>
         <CardBody>
           {trendPoints.length === 0 ? (
-            <p className="py-8 text-center text-sm text-slate-500">No trend data yet.</p>
+            <p className="py-8 text-center text-sm text-neutral-500">No trend data yet.</p>
           ) : (
             <div className="flex h-56 items-end gap-2 overflow-x-auto pb-2">
               {trendPoints.map((p, i) => {
                 const h = Math.max(4, Math.round((p.value / maxTrend) * 180))
                 return (
                   <div key={`${p.label}-${i}`} className="flex min-w-[36px] flex-1 flex-col items-center gap-2">
-                    <span className="text-[10px] font-medium text-slate-400">{money(p.value)}</span>
+                    <span className="text-[10px] font-medium text-neutral-400">{money(p.value)}</span>
                     <div
                       className="w-full rounded-t bg-gradient-to-t from-orange-600 to-orange-400"
                       style={{ height: `${h}px` }}
                       title={`${p.label}: ${money(p.value)}`}
                     />
-                    <span className="max-w-[60px] truncate text-[10px] text-slate-500" title={p.label}>
+                    <span className="max-w-[60px] truncate text-[10px] text-neutral-500" title={p.label}>
                       {p.label}
                     </span>
                   </div>
@@ -274,19 +274,19 @@ export default function RoiPage() {
       {/* Filters */}
       <Card>
         <CardHeader className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-sm font-semibold text-slate-200">Savings records</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Savings records</h2>
           <div className="flex flex-wrap items-center gap-2">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search alert / network..."
-              className="w-48 rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 placeholder-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-48 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 placeholder-neutral-600 focus:border-orange-500 focus:outline-none"
             />
             <select
               value={networkFilter}
               onChange={(e) => setNetworkFilter(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All networks</option>
               {networks.map((n) => (
@@ -326,27 +326,27 @@ export default function RoiPage() {
                 {filteredRecords.map((r) => (
                   <TR key={r.id}>
                     <TD>
-                      {r.network ? <Badge tone={netTone(r.network)}>{r.network}</Badge> : <span className="text-slate-600">—</span>}
+                      {r.network ? <Badge tone={netTone(r.network)}>{r.network}</Badge> : <span className="text-neutral-600">—</span>}
                     </TD>
-                    <TD className="font-mono text-xs text-slate-400">{r.alert_id ? r.alert_id.slice(0, 8) : '—'}</TD>
+                    <TD className="font-mono text-xs text-neutral-400">{r.alert_id ? r.alert_id.slice(0, 8) : '—'}</TD>
                     <TD className="text-right">{money(r.refund_paid_cents)}</TD>
                     <TD className="text-right text-emerald-400">{money(r.chargeback_cost_avoided_cents)}</TD>
                     <TD className="text-right">{money(r.fine_averted_cents)}</TD>
                     <TD className="text-right font-semibold text-emerald-300">{money(r.net_savings_cents)}</TD>
-                    <TD className="text-xs text-slate-500">
+                    <TD className="text-xs text-neutral-500">
                       {r.created_at ? new Date(r.created_at).toLocaleDateString() : '—'}
                     </TD>
                   </TR>
                 ))}
               </TBody>
-              <tfoot className="border-t border-slate-800 bg-slate-900/60 text-sm">
+              <tfoot className="border-t border-neutral-800 bg-neutral-900/60 text-sm">
                 <tr>
-                  <TD className="font-medium text-slate-300" colSpan={2}>
+                  <TD className="font-medium text-neutral-300" colSpan={2}>
                     {filteredRecords.length} record{filteredRecords.length === 1 ? '' : 's'}
                   </TD>
-                  <TD className="text-right font-medium text-slate-300">{money(recordTotals.refund)}</TD>
+                  <TD className="text-right font-medium text-neutral-300">{money(recordTotals.refund)}</TD>
                   <TD className="text-right font-medium text-emerald-400">{money(recordTotals.cbAvoided)}</TD>
-                  <TD className="text-right font-medium text-slate-300">{money(recordTotals.fineAverted)}</TD>
+                  <TD className="text-right font-medium text-neutral-300">{money(recordTotals.fineAverted)}</TD>
                   <TD className="text-right font-semibold text-emerald-300">{money(recordTotals.net)}</TD>
                   <TD />
                 </tr>

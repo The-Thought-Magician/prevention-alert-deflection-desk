@@ -161,8 +161,8 @@ export default function DecisionsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-slate-100">Decisions</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-xl font-semibold text-neutral-100">Decisions</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             History of every engine recommendation and manual override, with the explainable factor breakdown.
           </p>
         </div>
@@ -187,18 +187,18 @@ export default function DecisionsPage() {
       <Card>
         <CardHeader>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="text-sm font-semibold text-slate-200">History</h2>
+            <h2 className="text-sm font-semibold text-neutral-200">History</h2>
             <div className="flex flex-wrap items-center gap-2">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search alert / reason / actor"
-                className="w-56 rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+                className="w-56 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
               />
               <select
                 value={recFilter}
                 onChange={(e) => setRecFilter(e.target.value)}
-                className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 <option value="all">All recommendations</option>
                 {RECOMMENDATIONS.map((r) => <option key={r} value={r}>{recLabel(r)}</option>)}
@@ -206,7 +206,7 @@ export default function DecisionsPage() {
               <select
                 value={overrideFilter}
                 onChange={(e) => setOverrideFilter(e.target.value as any)}
-                className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 <option value="all">Engine + overrides</option>
                 <option value="engine">Engine only</option>
@@ -225,7 +225,7 @@ export default function DecisionsPage() {
               />
             </div>
           ) : filtered.length === 0 ? (
-            <div className="px-5 py-10 text-center text-sm text-slate-500">
+            <div className="px-5 py-10 text-center text-sm text-neutral-500">
               No decisions match the current filters.
             </div>
           ) : (
@@ -244,7 +244,7 @@ export default function DecisionsPage() {
               <TBody>
                 {filtered.map((d) => (
                   <TR key={d.id}>
-                    <TD className="font-medium text-slate-200">
+                    <TD className="font-medium text-neutral-200">
                       {d.alert_id ? (
                         <Link href={`/dashboard/alerts/${d.alert_id}`} className="hover:text-orange-300">
                           {d.alert_id.slice(0, 8)}…
@@ -256,7 +256,7 @@ export default function DecisionsPage() {
                     </TD>
                     <TD>
                       {d.score != null ? (
-                        <span className="font-mono text-slate-200">{Number(d.score).toFixed(2)}</span>
+                        <span className="font-mono text-neutral-200">{Number(d.score).toFixed(2)}</span>
                       ) : '—'}
                     </TD>
                     <TD>
@@ -265,14 +265,14 @@ export default function DecisionsPage() {
                         : <Badge tone="slate">Engine</Badge>}
                     </TD>
                     <TD className="text-xs">{d.decided_by ?? '—'}</TD>
-                    <TD className="text-xs text-slate-500">
+                    <TD className="text-xs text-neutral-500">
                       {d.created_at ? new Date(d.created_at).toLocaleString() : '—'}
                     </TD>
                     <TD>
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => setInspect(d)}
-                          className="text-xs text-slate-400 hover:text-slate-200"
+                          className="text-xs text-neutral-400 hover:text-neutral-200"
                         >
                           Factors
                         </button>
@@ -308,33 +308,33 @@ export default function DecisionsPage() {
       >
         {target && (
           <div className="space-y-4">
-            <div className="rounded-lg border border-slate-800 bg-slate-950 px-4 py-3 text-sm">
+            <div className="rounded-lg border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Current</span>
+                <span className="text-neutral-400">Current</span>
                 <Badge tone={recTone(target.recommendation)}>{recLabel(target.recommendation)}</Badge>
               </div>
               {target.alert_id && (
-                <div className="mt-1 text-xs text-slate-500">Alert {target.alert_id}</div>
+                <div className="mt-1 text-xs text-neutral-500">Alert {target.alert_id}</div>
               )}
             </div>
             <label className="block">
-              <span className="mb-1 block text-xs font-medium text-slate-400">New recommendation</span>
+              <span className="mb-1 block text-xs font-medium text-neutral-400">New recommendation</span>
               <select
                 value={overrideRec}
                 onChange={(e) => setOverrideRec(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 {RECOMMENDATIONS.map((r) => <option key={r} value={r}>{recLabel(r)}</option>)}
               </select>
             </label>
             <label className="block">
-              <span className="mb-1 block text-xs font-medium text-slate-400">Reason <span className="text-orange-400">*</span></span>
+              <span className="mb-1 block text-xs font-medium text-neutral-400">Reason <span className="text-orange-400">*</span></span>
               <textarea
                 value={overrideReason}
                 onChange={(e) => setOverrideReason(e.target.value)}
                 rows={3}
                 placeholder="Why are you overriding the engine recommendation?"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
               />
             </label>
             {modalError && (
@@ -358,7 +358,7 @@ export default function DecisionsPage() {
             <div className="flex items-center justify-between">
               <Badge tone={recTone(inspect.recommendation)}>{recLabel(inspect.recommendation)}</Badge>
               {inspect.score != null && (
-                <span className="font-mono text-sm text-slate-300">score {Number(inspect.score).toFixed(2)}</span>
+                <span className="font-mono text-sm text-neutral-300">score {Number(inspect.score).toFixed(2)}</span>
               )}
             </div>
             {inspect.is_override && inspect.override_reason && (
@@ -369,16 +369,16 @@ export default function DecisionsPage() {
             {inspect.factors && Object.keys(inspect.factors).length > 0 ? (
               <div className="space-y-1.5">
                 {Object.entries(inspect.factors).map(([k, v]) => (
-                  <div key={k} className="flex items-center justify-between gap-3 rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm">
-                    <span className="text-slate-400">{k.replace(/_/g, ' ')}</span>
-                    <span className="font-mono text-slate-200">
+                  <div key={k} className="flex items-center justify-between gap-3 rounded-lg border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm">
+                    <span className="text-neutral-400">{k.replace(/_/g, ' ')}</span>
+                    <span className="font-mono text-neutral-200">
                       {typeof v === 'object' ? JSON.stringify(v) : String(v)}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-slate-500">No factor breakdown recorded for this decision.</p>
+              <p className="text-sm text-neutral-500">No factor breakdown recorded for this decision.</p>
             )}
           </div>
         )}

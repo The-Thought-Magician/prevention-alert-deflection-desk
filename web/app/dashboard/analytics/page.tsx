@@ -85,12 +85,12 @@ function BarBreakdown({ title, data }: { title: string; data: Bucket[] }) {
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-200">{title}</h2>
+        <h2 className="text-sm font-semibold text-neutral-200">{title}</h2>
         <Badge tone="slate">{total.toLocaleString()} total</Badge>
       </CardHeader>
       <CardBody>
         {data.length === 0 ? (
-          <p className="py-6 text-center text-sm text-slate-500">No data.</p>
+          <p className="py-6 text-center text-sm text-neutral-500">No data.</p>
         ) : (
           <ul className="space-y-3">
             {data.map((b, i) => {
@@ -100,14 +100,14 @@ function BarBreakdown({ title, data }: { title: string; data: Bucket[] }) {
               return (
                 <li key={`${bucketLabel(b)}-${i}`}>
                   <div className="mb-1 flex items-center justify-between text-xs">
-                    <span className="truncate text-slate-300" title={bucketLabel(b)}>
+                    <span className="truncate text-neutral-300" title={bucketLabel(b)}>
                       {bucketLabel(b)}
                     </span>
-                    <span className="ml-2 shrink-0 text-slate-400">
-                      {c.toLocaleString()} <span className="text-slate-600">({share}%)</span>
+                    <span className="ml-2 shrink-0 text-neutral-400">
+                      {c.toLocaleString()} <span className="text-neutral-600">({share}%)</span>
                     </span>
                   </div>
-                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-800">
+                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-neutral-800">
                     <div
                       className={`h-full rounded-full bg-gradient-to-r ${BAR_TONES[i % BAR_TONES.length]}`}
                       style={{ width: `${w}%` }}
@@ -208,8 +208,8 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-slate-100">Analytics &amp; Trends</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-xl font-semibold text-neutral-100">Analytics &amp; Trends</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Alert volume by network, reason, and disposition, plus deflection performance.
           </p>
         </div>
@@ -243,14 +243,14 @@ export default function AnalyticsPage() {
           {/* View switcher */}
           <Card>
             <CardHeader className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-sm font-semibold text-slate-200">Alert volume breakdown</h2>
-              <div className="inline-flex rounded-lg border border-slate-700 bg-slate-950 p-0.5">
+              <h2 className="text-sm font-semibold text-neutral-200">Alert volume breakdown</h2>
+              <div className="inline-flex rounded-lg border border-neutral-700 bg-neutral-950 p-0.5">
                 {(['network', 'reason', 'disposition'] as const).map((v) => (
                   <button
                     key={v}
                     onClick={() => setView(v)}
                     className={`rounded-md px-3 py-1.5 text-xs font-medium capitalize transition-colors ${
-                      view === v ? 'bg-orange-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                      view === v ? 'bg-orange-600 text-white' : 'text-neutral-400 hover:text-neutral-200'
                     }`}
                   >
                     {v}
@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardBody>
               {activeData.length === 0 ? (
-                <p className="py-6 text-center text-sm text-slate-500">No data for this breakdown.</p>
+                <p className="py-6 text-center text-sm text-neutral-500">No data for this breakdown.</p>
               ) : (
                 <BarsInline data={activeData} />
               )}
@@ -288,13 +288,13 @@ function BarsInline({ data }: { data: Bucket[] }) {
         const h = Math.max(6, Math.round((c / max) * 200))
         return (
           <div key={`${bucketLabel(b)}-${i}`} className="flex min-w-[48px] flex-1 flex-col items-center gap-2">
-            <span className="text-xs font-medium text-slate-300">{c.toLocaleString()}</span>
+            <span className="text-xs font-medium text-neutral-300">{c.toLocaleString()}</span>
             <div
               className={`w-full rounded-t bg-gradient-to-t ${BAR_TONES[i % BAR_TONES.length]}`}
               style={{ height: `${h}px` }}
               title={`${bucketLabel(b)}: ${c}`}
             />
-            <span className="max-w-[72px] truncate text-center text-[11px] text-slate-500" title={bucketLabel(b)}>
+            <span className="max-w-[72px] truncate text-center text-[11px] text-neutral-500" title={bucketLabel(b)}>
               {bucketLabel(b)}
             </span>
           </div>

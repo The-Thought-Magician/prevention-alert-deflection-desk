@@ -168,8 +168,8 @@ export default function AuditPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Audit Trail</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-neutral-100">Audit Trail</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Immutable log of every action taken across the workspace, with actor, entity, and detail.
           </p>
         </div>
@@ -195,12 +195,12 @@ export default function AuditPage() {
               value={actor}
               onChange={(e) => setActor(e.target.value)}
               placeholder="Actor"
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
             />
             <select
               value={action}
               onChange={(e) => setAction(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="">All actions</option>
               {actionOptions.map((a) => (
@@ -212,7 +212,7 @@ export default function AuditPage() {
             <select
               value={entityType}
               onChange={(e) => setEntityType(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="">All entities</option>
               {entityTypeOptions.map((t) => (
@@ -225,13 +225,13 @@ export default function AuditPage() {
               type="date"
               value={fromDate}
               onChange={(e) => setFromDate(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             />
             <input
               type="date"
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             />
             <div className="flex gap-2">
               <Button type="submit" className="flex-1">
@@ -249,7 +249,7 @@ export default function AuditPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search within loaded events (actor, entity id, detail)..."
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:border-orange-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
             />
           </div>
         </CardHeader>
@@ -280,16 +280,16 @@ export default function AuditPage() {
                 {filtered.map((ev) => (
                   <TR key={ev.id}>
                     <TD className="whitespace-nowrap">
-                      <div className="text-slate-200">{fmtDateTime(ev.created_at)}</div>
-                      <div className="text-xs text-slate-500">{relTime(ev.created_at)}</div>
+                      <div className="text-neutral-200">{fmtDateTime(ev.created_at)}</div>
+                      <div className="text-xs text-neutral-500">{relTime(ev.created_at)}</div>
                     </TD>
-                    <TD className="font-medium text-slate-200">{ev.actor || '—'}</TD>
+                    <TD className="font-medium text-neutral-200">{ev.actor || '—'}</TD>
                     <TD>
                       <Badge tone={actionTone(ev.action)}>{ev.action}</Badge>
                     </TD>
                     <TD>
-                      <div className="text-slate-300">{ev.entity_type || '—'}</div>
-                      {ev.entity_id && <div className="font-mono text-xs text-slate-500">{ev.entity_id}</div>}
+                      <div className="text-neutral-300">{ev.entity_type || '—'}</div>
+                      {ev.entity_id && <div className="font-mono text-xs text-neutral-500">{ev.entity_id}</div>}
                     </TD>
                     <TD className="text-right">
                       {ev.detail != null ? (
@@ -297,7 +297,7 @@ export default function AuditPage() {
                           View
                         </Button>
                       ) : (
-                        <span className="text-xs text-slate-600">—</span>
+                        <span className="text-xs text-neutral-600">—</span>
                       )}
                     </TD>
                   </TR>
@@ -312,29 +312,29 @@ export default function AuditPage() {
         {detail && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
-                <div className="text-xs uppercase tracking-wide text-slate-500">Actor</div>
-                <div className="mt-1 text-sm text-slate-100">{detail.actor || '—'}</div>
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+                <div className="text-xs uppercase tracking-wide text-neutral-500">Actor</div>
+                <div className="mt-1 text-sm text-neutral-100">{detail.actor || '—'}</div>
               </div>
-              <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
-                <div className="text-xs uppercase tracking-wide text-slate-500">Action</div>
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+                <div className="text-xs uppercase tracking-wide text-neutral-500">Action</div>
                 <div className="mt-1">
                   <Badge tone={actionTone(detail.action)}>{detail.action}</Badge>
                 </div>
               </div>
-              <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
-                <div className="text-xs uppercase tracking-wide text-slate-500">Entity</div>
-                <div className="mt-1 text-sm text-slate-100">{detail.entity_type || '—'}</div>
-                <div className="font-mono text-xs text-slate-500">{detail.entity_id}</div>
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+                <div className="text-xs uppercase tracking-wide text-neutral-500">Entity</div>
+                <div className="mt-1 text-sm text-neutral-100">{detail.entity_type || '—'}</div>
+                <div className="font-mono text-xs text-neutral-500">{detail.entity_id}</div>
               </div>
-              <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
-                <div className="text-xs uppercase tracking-wide text-slate-500">When</div>
-                <div className="mt-1 text-sm text-slate-100">{fmtDateTime(detail.created_at)}</div>
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+                <div className="text-xs uppercase tracking-wide text-neutral-500">When</div>
+                <div className="mt-1 text-sm text-neutral-100">{fmtDateTime(detail.created_at)}</div>
               </div>
             </div>
             <div>
-              <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">Detail payload</div>
-              <pre className="max-h-80 overflow-auto rounded-lg border border-slate-800 bg-slate-950 p-3 text-xs text-slate-300">
+              <div className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-500">Detail payload</div>
+              <pre className="max-h-80 overflow-auto rounded-lg border border-neutral-800 bg-neutral-950 p-3 text-xs text-neutral-300">
                 {JSON.stringify(detail.detail, null, 2)}
               </pre>
             </div>

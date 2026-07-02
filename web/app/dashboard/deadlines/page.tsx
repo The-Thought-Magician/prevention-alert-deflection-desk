@@ -150,8 +150,8 @@ export default function DeadlinesPage() {
     <div className="space-y-6" data-now={now}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-slate-100">Deadline Board</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-xl font-semibold text-neutral-100">Deadline Board</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Deflectable alerts banded by SLA urgency. Act on critical alerts before they lapse into chargebacks.
           </p>
         </div>
@@ -185,15 +185,15 @@ export default function DeadlinesPage() {
             const items = board[band.key] ?? []
             return (
               <div key={band.key} className={`rounded-xl border ${band.accent}`}>
-                <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
+                <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-3">
                   <div className="flex items-center gap-2">
                     <Badge tone={band.tone}>{band.label}</Badge>
-                    <span className="text-sm text-slate-400">{items.length}</span>
+                    <span className="text-sm text-neutral-400">{items.length}</span>
                   </div>
                 </div>
                 <div className="max-h-[28rem] space-y-2 overflow-y-auto p-3">
                   {items.length === 0 ? (
-                    <p className="px-2 py-6 text-center text-xs text-slate-600">None</p>
+                    <p className="px-2 py-6 text-center text-xs text-neutral-600">None</p>
                   ) : (
                     items.map((a) => {
                       const ms = msUntil(a.deadline_at)
@@ -201,13 +201,13 @@ export default function DeadlinesPage() {
                         <Link
                           key={a.id}
                           href={`/dashboard/alerts/${a.id}`}
-                          className="block rounded-lg border border-slate-800 bg-slate-900/80 p-3 transition-colors hover:border-orange-500/40 hover:bg-slate-900"
+                          className="block rounded-lg border border-neutral-800 bg-neutral-900/80 p-3 transition-colors hover:border-orange-500/40 hover:bg-neutral-900"
                         >
                           <div className="flex items-center justify-between gap-2">
-                            <span className="truncate text-sm font-medium text-slate-200">
+                            <span className="truncate text-sm font-medium text-neutral-200">
                               {a.external_alert_id ?? a.id}
                             </span>
-                            <span className="text-sm font-semibold text-slate-100">
+                            <span className="text-sm font-semibold text-neutral-100">
                               {money(a.amount_cents, a.currency)}
                             </span>
                           </div>
@@ -223,7 +223,7 @@ export default function DeadlinesPage() {
                           }`}>
                             {formatCountdown(ms)}
                             {a.deadline_at && (
-                              <span className="ml-1.5 text-slate-600">
+                              <span className="ml-1.5 text-neutral-600">
                                 · {new Date(a.deadline_at).toLocaleString()}
                               </span>
                             )}
@@ -242,13 +242,13 @@ export default function DeadlinesPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-slate-200">Breaches &amp; near-misses</h2>
+            <h2 className="text-sm font-semibold text-neutral-200">Breaches &amp; near-misses</h2>
             <Badge tone={breaches.length ? 'red' : 'green'}>{breaches.length} flagged</Badge>
           </div>
         </CardHeader>
         <CardBody className="p-0">
           {breaches.length === 0 ? (
-            <div className="px-5 py-10 text-center text-sm text-slate-500">
+            <div className="px-5 py-10 text-center text-sm text-neutral-500">
               No deflectable alerts are past or near their deadline. You are within SLA.
             </div>
           ) : (
@@ -270,7 +270,7 @@ export default function DeadlinesPage() {
                   const ms = msUntil(a.deadline_at)
                   return (
                     <TR key={a.id}>
-                      <TD className="font-medium text-slate-200">{a.external_alert_id ?? a.id}</TD>
+                      <TD className="font-medium text-neutral-200">{a.external_alert_id ?? a.id}</TD>
                       <TD>{a.network ?? '—'}</TD>
                       <TD>{money(a.amount_cents, a.currency)}</TD>
                       <TD>{a.reason_code ?? a.reason_category ?? '—'}</TD>

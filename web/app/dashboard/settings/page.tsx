@@ -331,8 +331,8 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100">Settings</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-neutral-100">Settings</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Workspace configuration, chargeback-program thresholds, billing plan, and sample-data tools.
           </p>
         </div>
@@ -355,30 +355,30 @@ export default function SettingsPage() {
       {/* Workspace settings */}
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Workspace</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Workspace</h2>
         </CardHeader>
         <CardBody>
           <form onSubmit={saveWorkspace} className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Workspace name
               </label>
               <input
                 value={wsName}
                 onChange={(e) => setWsName(e.target.value)}
                 required
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
                 placeholder="My deflection desk"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Default currency
               </label>
               <select
                 value={wsCurrency}
                 onChange={(e) => setWsCurrency(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               >
                 {CURRENCIES.map((c) => (
                   <option key={c} value={c}>
@@ -392,7 +392,7 @@ export default function SettingsPage() {
                 {savingWs ? 'Saving...' : 'Save workspace'}
               </Button>
               {workspace?.created_at && (
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-neutral-500">
                   Created {new Date(workspace.created_at).toLocaleDateString()}
                 </span>
               )}
@@ -406,8 +406,8 @@ export default function SettingsPage() {
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h2 className="text-sm font-semibold text-slate-200">Program thresholds</h2>
-              <p className="mt-0.5 text-xs text-slate-500">
+              <h2 className="text-sm font-semibold text-neutral-200">Program thresholds</h2>
+              <p className="mt-0.5 text-xs text-neutral-500">
                 VDMP / ECP standard and excessive ratio bands, fine exposure, and SLA windows per network.
               </p>
             </div>
@@ -442,7 +442,7 @@ export default function SettingsPage() {
               <TBody>
                 {thresholds.map((t, i) => (
                   <TR key={t.id ?? i}>
-                    <TD className="font-medium text-slate-100">{t.program ?? '—'}</TD>
+                    <TD className="font-medium text-neutral-100">{t.program ?? '—'}</TD>
                     <TD>{t.network ?? '—'}</TD>
                     <TD>{t.standard_ratio != null ? `${(t.standard_ratio * 100).toFixed(3)}%` : '—'}</TD>
                     <TD>
@@ -471,7 +471,7 @@ export default function SettingsPage() {
       {/* Billing / plan */}
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Billing &amp; plan</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Billing &amp; plan</h2>
         </CardHeader>
         <CardBody className="space-y-5">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -500,13 +500,13 @@ export default function SettingsPage() {
             />
           </div>
 
-          <div className="rounded-lg border border-slate-800 bg-slate-950/40 p-4">
+          <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-medium text-slate-200">
+                <p className="text-sm font-medium text-neutral-200">
                   {stripeEnabled ? 'Manage your subscription' : 'Billing not configured'}
                 </p>
-                <p className="mt-0.5 text-xs text-slate-500">
+                <p className="mt-0.5 text-xs text-neutral-500">
                   {stripeEnabled
                     ? 'Upgrade to Pro or manage payment details through the secure Stripe portal.'
                     : 'Stripe is not configured for this deployment. Every feature is currently free. Checkout returns 503 until billing is enabled.'}
@@ -546,10 +546,10 @@ export default function SettingsPage() {
       {/* Sample data tools */}
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Sample data</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Sample data</h2>
         </CardHeader>
         <CardBody>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-neutral-400">
             Seed this workspace with realistic sample orders, alerts across all three networks (Ethoca, Verifi CDRN,
             Visa RDR), customers, reason codes, a default rule set, thresholds, and feed connections. Reset clears all
             sample data from the workspace.
@@ -589,25 +589,25 @@ export default function SettingsPage() {
           )}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Program</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Program</label>
               <input
                 value={thrForm.program}
                 onChange={(e) => setThrForm({ ...thrForm, program: e.target.value })}
                 placeholder="VDMP"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Network</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Network</label>
               <input
                 value={thrForm.network}
                 onChange={(e) => setThrForm({ ...thrForm, network: e.target.value })}
                 placeholder="visa"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Standard ratio (%)
               </label>
               <input
@@ -617,11 +617,11 @@ export default function SettingsPage() {
                 value={thrForm.standard_ratio}
                 onChange={(e) => setThrForm({ ...thrForm, standard_ratio: e.target.value })}
                 placeholder="0.900"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Excessive ratio (%)
               </label>
               <input
@@ -631,11 +631,11 @@ export default function SettingsPage() {
                 value={thrForm.excessive_ratio}
                 onChange={(e) => setThrForm({ ...thrForm, excessive_ratio: e.target.value })}
                 placeholder="1.800"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Min dispute count
               </label>
               <input
@@ -644,11 +644,11 @@ export default function SettingsPage() {
                 value={thrForm.standard_count}
                 onChange={(e) => setThrForm({ ...thrForm, standard_count: e.target.value })}
                 placeholder="100"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Fine / dispute ($)
               </label>
               <input
@@ -658,11 +658,11 @@ export default function SettingsPage() {
                 value={thrForm.fine_per_dispute_cents}
                 onChange={(e) => setThrForm({ ...thrForm, fine_per_dispute_cents: e.target.value })}
                 placeholder="50.00"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               />
             </div>
             <div className="col-span-2">
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
                 SLA window (hours)
               </label>
               <input
@@ -671,7 +671,7 @@ export default function SettingsPage() {
                 value={thrForm.sla_window_hours}
                 onChange={(e) => setThrForm({ ...thrForm, sla_window_hours: e.target.value })}
                 placeholder="72"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 focus:border-orange-500 focus:outline-none"
               />
             </div>
           </div>
@@ -694,7 +694,7 @@ export default function SettingsPage() {
           </>
         }
       >
-        <p className="text-sm text-slate-300">
+        <p className="text-sm text-neutral-300">
           This clears all sample orders, alerts, customers, decisions, refunds, and related records from this
           workspace. This action cannot be undone.
         </p>

@@ -276,8 +276,8 @@ export default function AutomationPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Automation</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-neutral-100">Automation</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Hands-off deflection rules. Dry-run records matches without spending; live rules execute refunds within guardrails.
           </p>
         </div>
@@ -300,18 +300,18 @@ export default function AutomationPage() {
 
       <Card>
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm font-semibold text-slate-200">Rule library</div>
+          <div className="text-sm font-semibold text-neutral-200">Rule library</div>
           <div className="flex flex-wrap items-center gap-2">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search rules..."
-              className="w-44 rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-44 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All statuses</option>
               <option value="enabled">Enabled</option>
@@ -357,10 +357,10 @@ export default function AutomationPage() {
                   return (
                     <TR key={rule.id}>
                       <TD>
-                        <div className="font-medium text-slate-100">{rule.name}</div>
+                        <div className="font-medium text-neutral-100">{rule.name}</div>
                         <div className="mt-1 flex flex-wrap gap-1">
                           {(rule.reason_categories ?? []).length === 0 ? (
-                            <span className="text-xs text-slate-500">Any reason category</span>
+                            <span className="text-xs text-neutral-500">Any reason category</span>
                           ) : (
                             (rule.reason_categories ?? []).map((c) => (
                               <Badge key={c} tone="slate">
@@ -371,7 +371,7 @@ export default function AutomationPage() {
                         </div>
                       </TD>
                       <TD>
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-neutral-400">
                           <div>Max {dollars(rule.max_amount_cents)}/alert</div>
                           <div>Cap {rule.max_per_day}/day</div>
                           <div>{rule.require_clean_customer ? 'Clean customers only' : 'Any customer'}</div>
@@ -387,14 +387,14 @@ export default function AutomationPage() {
                       <TD>
                         {rule.is_enabled ? <Badge tone="green">Enabled</Badge> : <Badge tone="slate">Disabled</Badge>}
                       </TD>
-                      <TD className="text-right tabular-nums text-slate-200">{rule.execution_count}</TD>
+                      <TD className="text-right tabular-nums text-neutral-200">{rule.execution_count}</TD>
                       <TD>
                         {result ? (
-                          <span className="text-xs text-slate-400">
+                          <span className="text-xs text-neutral-400">
                             {result.matched} matched / {result.executed} {result.dryRun ? 'would run' : 'executed'}
                           </span>
                         ) : (
-                          <span className="text-xs text-slate-600">Not run this session</span>
+                          <span className="text-xs text-neutral-600">Not run this session</span>
                         )}
                       </TD>
                       <TD>
@@ -450,41 +450,41 @@ export default function AutomationPage() {
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">{formError}</div>
           )}
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Rule name</label>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Rule name</label>
             <input
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               placeholder="Auto-deflect small consumer disputes"
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Max amount ($)</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Max amount ($)</label>
               <input
                 type="number"
                 min="0"
                 step="0.01"
                 value={form.max_amount_dollars}
                 onChange={(e) => setForm((f) => ({ ...f, max_amount_dollars: e.target.value }))}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Max per day</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Max per day</label>
               <input
                 type="number"
                 min="1"
                 step="1"
                 value={form.max_per_day}
                 onChange={(e) => setForm((f) => ({ ...f, max_per_day: e.target.value }))}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               />
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
-              Reason categories <span className="normal-case text-slate-600">(none = match any)</span>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
+              Reason categories <span className="normal-case text-neutral-600">(none = match any)</span>
             </label>
             <div className="flex flex-wrap gap-2">
               {REASON_CATEGORIES.map((cat) => {
@@ -497,7 +497,7 @@ export default function AutomationPage() {
                     className={`rounded-full border px-3 py-1 text-xs transition-colors ${
                       active
                         ? 'border-orange-500/40 bg-orange-500/15 text-orange-300'
-                        : 'border-slate-700 bg-slate-950 text-slate-400 hover:text-slate-200'
+                        : 'border-neutral-700 bg-neutral-950 text-neutral-400 hover:text-neutral-200'
                     }`}
                   >
                     {cat}
@@ -507,30 +507,30 @@ export default function AutomationPage() {
             </div>
           </div>
           <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={form.require_clean_customer}
                 onChange={(e) => setForm((f) => ({ ...f, require_clean_customer: e.target.checked }))}
-                className="h-4 w-4 rounded border-slate-600 bg-slate-950 accent-orange-500"
+                className="h-4 w-4 rounded border-neutral-600 bg-neutral-950 accent-orange-500"
               />
               Require clean customer (not watchlisted)
             </label>
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={form.is_dry_run}
                 onChange={(e) => setForm((f) => ({ ...f, is_dry_run: e.target.checked }))}
-                className="h-4 w-4 rounded border-slate-600 bg-slate-950 accent-orange-500"
+                className="h-4 w-4 rounded border-neutral-600 bg-neutral-950 accent-orange-500"
               />
               Dry-run mode (record matches only, no refunds)
             </label>
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={form.is_enabled}
                 onChange={(e) => setForm((f) => ({ ...f, is_enabled: e.target.checked }))}
-                className="h-4 w-4 rounded border-slate-600 bg-slate-950 accent-orange-500"
+                className="h-4 w-4 rounded border-neutral-600 bg-neutral-950 accent-orange-500"
               />
               Enabled
             </label>

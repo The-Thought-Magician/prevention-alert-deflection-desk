@@ -196,8 +196,8 @@ export default function RefundsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-100">Refund Ledger</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="text-2xl font-bold text-neutral-100">Refund Ledger</h1>
+        <p className="mt-1 text-sm text-neutral-400">
           Every deflection refund, reconciled against ledger links, with double-refund prevention.
         </p>
       </div>
@@ -228,8 +228,8 @@ export default function RefundsPage() {
       {/* Double-refund checker */}
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Double-refund check</h2>
-          <p className="mt-1 text-xs text-slate-500">
+          <h2 className="text-sm font-semibold text-neutral-200">Double-refund check</h2>
+          <p className="mt-1 text-xs text-neutral-500">
             Verify whether an order has already been refunded before issuing another deflection.
           </p>
         </CardHeader>
@@ -239,7 +239,7 @@ export default function RefundsPage() {
               value={checkOrderId}
               onChange={(e) => setCheckOrderId(e.target.value)}
               placeholder="Order ID"
-              className="min-w-[260px] flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="min-w-[260px] flex-1 rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
             <Button type="submit" disabled={checking || !checkOrderId.trim()}>
               {checking ? 'Checking...' : 'Check'}
@@ -260,7 +260,7 @@ export default function RefundsPage() {
                 ) : (
                   <Badge tone="green">Clear — no prior refund found</Badge>
                 )}
-                <span className="text-xs text-slate-500">Order {short(checkOrderId)}</span>
+                <span className="text-xs text-neutral-500">Order {short(checkOrderId)}</span>
               </div>
               {(checkResult.refunds?.length ?? 0) > 0 && (
                 <Table>
@@ -295,20 +295,20 @@ export default function RefundsPage() {
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-slate-200">
-              Ledger <span className="text-slate-500">({filtered.length})</span>
+            <h2 className="text-sm font-semibold text-neutral-200">
+              Ledger <span className="text-neutral-500">({filtered.length})</span>
             </h2>
             <div className="flex flex-wrap items-center gap-2">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by id / order / alert"
-                className="w-56 rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+                className="w-56 rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
               />
               <select
                 value={methodFilter}
                 onChange={(e) => setMethodFilter(e.target.value)}
-                className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 <option value="all">All methods</option>
                 {methods.map((m) => (
@@ -320,7 +320,7 @@ export default function RefundsPage() {
               <select
                 value={sourceFilter}
                 onChange={(e) => setSourceFilter(e.target.value)}
-                className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 <option value="all">All sources</option>
                 {sources.map((s) => (
@@ -372,7 +372,7 @@ export default function RefundsPage() {
                         </span>
                       </TD>
                       <TD className="font-mono text-xs">{short(r.alert_id)}</TD>
-                      <TD className="font-medium text-slate-100">{money(r.amount_cents, r.currency)}</TD>
+                      <TD className="font-medium text-neutral-100">{money(r.amount_cents, r.currency)}</TD>
                       <TD>{r.method ?? '—'}</TD>
                       <TD>
                         <Badge tone={r.source === 'auto' || r.source === 'automation' ? 'purple' : 'blue'}>
@@ -400,14 +400,14 @@ export default function RefundsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-slate-200">
-              Ledger links <span className="text-slate-500">({links.length})</span>
+            <h2 className="text-sm font-semibold text-neutral-200">
+              Ledger links <span className="text-neutral-500">({links.length})</span>
             </h2>
             {unlinkedCount > 0 && (
               <Badge tone="amber">{unlinkedCount} refund(s) not yet linked</Badge>
             )}
           </div>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-neutral-500">
             Refund ↔ order ↔ alert links enforce one-refund-per-order and back the double-refund guard.
           </p>
         </CardHeader>

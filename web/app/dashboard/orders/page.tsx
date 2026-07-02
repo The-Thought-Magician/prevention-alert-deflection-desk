@@ -262,8 +262,8 @@ export default function OrdersPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100">Orders Registry</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-neutral-100">Orders Registry</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Transaction records that prevention alerts are matched against by ARN and card last-4.
           </p>
         </div>
@@ -291,20 +291,20 @@ export default function OrdersPage() {
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-slate-200">
-              Orders <span className="text-slate-500">({filtered.length})</span>
+            <h2 className="text-sm font-semibold text-neutral-200">
+              Orders <span className="text-neutral-500">({filtered.length})</span>
             </h2>
             <div className="flex flex-wrap items-center gap-2">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search id / ARN / product / last4"
-                className="w-60 rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+                className="w-60 rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
               />
               <select
                 value={flagFilter}
                 onChange={(e) => setFlagFilter(e.target.value as typeof flagFilter)}
-                className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 <option value="all">All orders</option>
                 <option value="refundable">Refundable</option>
@@ -351,13 +351,13 @@ export default function OrdersPage() {
                           {o.external_order_id ?? o.id}
                         </a>
                       ) : (
-                        <span className="font-medium text-slate-100">{o.external_order_id ?? '—'}</span>
+                        <span className="font-medium text-neutral-100">{o.external_order_id ?? '—'}</span>
                       )}
                     </TD>
                     <TD>{o.product ?? '—'}</TD>
                     <TD className="font-mono text-xs">{o.arn ?? '—'}</TD>
                     <TD className="font-mono text-xs">{o.card_last4 ? `••${o.card_last4}` : '—'}</TD>
-                    <TD className="font-medium text-slate-100">{money(o.amount_cents, o.currency)}</TD>
+                    <TD className="font-medium text-neutral-100">{money(o.amount_cents, o.currency)}</TD>
                     <TD>{o.margin_cents != null ? money(o.margin_cents, o.currency) : '—'}</TD>
                     <TD>
                       <div className="flex flex-wrap gap-1">
@@ -479,7 +479,7 @@ export default function OrdersPage() {
             />
           </Field>
           <div className="flex gap-4 pt-1">
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={form.refundable}
@@ -488,7 +488,7 @@ export default function OrdersPage() {
               />
               Refundable
             </label>
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={form.recoverable}
@@ -518,8 +518,8 @@ export default function OrdersPage() {
         }
       >
         <div className="space-y-3">
-          <p className="text-sm text-slate-400">
-            Paste CSV with a header row. Recognized columns: <code className="text-slate-300">external_order_id, arn, card_last4, amount, currency, margin, product, recoverable, refundable</code>.
+          <p className="text-sm text-neutral-400">
+            Paste CSV with a header row. Recognized columns: <code className="text-neutral-300">external_order_id, arn, card_last4, amount, currency, margin, product, recoverable, refundable</code>.
           </p>
           <button
             type="button"
@@ -533,10 +533,10 @@ export default function OrdersPage() {
             onChange={(e) => setCsv(e.target.value)}
             rows={8}
             placeholder={SAMPLE_CSV}
-            className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 font-mono text-xs text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-xs text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
           />
           {csv.trim() && (
-            <p className="text-xs text-slate-500">{parseCsv(csv).length} row(s) detected.</p>
+            <p className="text-xs text-neutral-500">{parseCsv(csv).length} row(s) detected.</p>
           )}
           {bulkError && (
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
@@ -555,12 +555,12 @@ export default function OrdersPage() {
 }
 
 const inputCls =
-  'w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none'
+  'w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none'
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium text-slate-400">{label}</span>
+      <span className="mb-1 block text-xs font-medium text-neutral-400">{label}</span>
       {children}
     </label>
   )

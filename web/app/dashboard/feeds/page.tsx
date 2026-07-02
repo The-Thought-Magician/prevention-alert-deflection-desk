@@ -266,8 +266,8 @@ export default function FeedsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Feeds</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-neutral-100">Feeds</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Network alert connections (Visa RDR, Mastercard Ethoca, Amex, Discover). Run a sample sync to generate alerts for testing.
           </p>
         </div>
@@ -290,18 +290,18 @@ export default function FeedsPage() {
 
       <Card>
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm font-semibold text-slate-200">Connections</div>
+          <div className="text-sm font-semibold text-neutral-200">Connections</div>
           <div className="flex flex-wrap items-center gap-2">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search feeds..."
-              className="w-44 rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-44 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
             <select
               value={networkFilter}
               onChange={(e) => setNetworkFilter(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All networks</option>
               {NETWORKS.map((n) => (
@@ -331,7 +331,7 @@ export default function FeedsPage() {
                 return (
                   <div
                     key={feed.id}
-                    className="flex flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                    className="flex flex-col rounded-xl border border-neutral-800 bg-neutral-950/60 p-4"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
@@ -344,10 +344,10 @@ export default function FeedsPage() {
                                   ? 'bg-amber-400'
                                   : meta.tone === 'red'
                                     ? 'bg-red-400'
-                                    : 'bg-slate-600'
+                                    : 'bg-neutral-600'
                             }`}
                           />
-                          <span className="font-medium text-slate-100">{feed.display_name}</span>
+                          <span className="font-medium text-neutral-100">{feed.display_name}</span>
                         </div>
                         <div className="mt-1 flex flex-wrap items-center gap-1.5">
                           <Badge tone={networkTone(feed.network)}>{feed.network}</Badge>
@@ -358,21 +358,21 @@ export default function FeedsPage() {
                     </div>
 
                     {feed.endpoint && (
-                      <div className="mt-3 truncate font-mono text-xs text-slate-500" title={feed.endpoint}>
+                      <div className="mt-3 truncate font-mono text-xs text-neutral-500" title={feed.endpoint}>
                         {feed.endpoint}
                       </div>
                     )}
 
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-                      <div className="rounded-lg bg-slate-900/70 px-3 py-2">
-                        <div className="text-slate-500">Alert volume</div>
-                        <div className="mt-0.5 text-sm font-semibold text-slate-200">
+                      <div className="rounded-lg bg-neutral-900/70 px-3 py-2">
+                        <div className="text-neutral-500">Alert volume</div>
+                        <div className="mt-0.5 text-sm font-semibold text-neutral-200">
                           {(feed.alert_volume || 0).toLocaleString()}
                         </div>
                       </div>
-                      <div className="rounded-lg bg-slate-900/70 px-3 py-2">
-                        <div className="text-slate-500">Last sync</div>
-                        <div className="mt-0.5 text-sm font-semibold text-slate-200">{timeAgo(feed.last_sync_at)}</div>
+                      <div className="rounded-lg bg-neutral-900/70 px-3 py-2">
+                        <div className="text-neutral-500">Last sync</div>
+                        <div className="mt-0.5 text-sm font-semibold text-neutral-200">{timeAgo(feed.last_sync_at)}</div>
                       </div>
                     </div>
 
@@ -382,7 +382,7 @@ export default function FeedsPage() {
                       </div>
                     )}
 
-                    <div className="mt-3 flex flex-wrap gap-1.5 border-t border-slate-800 pt-3">
+                    <div className="mt-3 flex flex-wrap gap-1.5 border-t border-neutral-800 pt-3">
                       <Button
                         variant="primary"
                         className="px-2.5 py-1 text-xs"
@@ -430,12 +430,12 @@ export default function FeedsPage() {
           )}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Network</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Network</label>
               <select
                 value={form.network}
                 onChange={(e) => setForm((f) => ({ ...f, network: e.target.value }))}
                 disabled={!!editing}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none disabled:opacity-60"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none disabled:opacity-60"
               >
                 {NETWORKS.map((n) => (
                   <option key={n} value={n}>
@@ -445,42 +445,42 @@ export default function FeedsPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Display name</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Display name</label>
               <input
                 value={form.display_name}
                 onChange={(e) => setForm((f) => ({ ...f, display_name: e.target.value }))}
                 placeholder="Visa RDR"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
               />
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
-              Endpoint <span className="normal-case text-slate-600">(optional in sample mode)</span>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
+              Endpoint <span className="normal-case text-neutral-600">(optional in sample mode)</span>
             </label>
             <input
               value={form.endpoint}
               onChange={(e) => setForm((f) => ({ ...f, endpoint: e.target.value }))}
               placeholder="https://feed.network.example/alerts"
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 font-mono text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
           </div>
           <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={form.is_sample_mode}
                 onChange={(e) => setForm((f) => ({ ...f, is_sample_mode: e.target.checked }))}
-                className="h-4 w-4 rounded border-slate-600 bg-slate-950 accent-orange-500"
+                className="h-4 w-4 rounded border-neutral-600 bg-neutral-950 accent-orange-500"
               />
               Sample mode (generate synthetic alerts on sync)
             </label>
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 checked={form.is_enabled}
                 onChange={(e) => setForm((f) => ({ ...f, is_enabled: e.target.checked }))}
-                className="h-4 w-4 rounded border-slate-600 bg-slate-950 accent-orange-500"
+                className="h-4 w-4 rounded border-neutral-600 bg-neutral-950 accent-orange-500"
               />
               Enabled
             </label>

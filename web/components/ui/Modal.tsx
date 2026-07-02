@@ -25,20 +25,20 @@ export function Modal({ open, onClose, title, children, footer, className = '' }
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div
-        className={`relative z-10 w-full max-w-lg rounded-xl border border-slate-800 bg-slate-900 shadow-2xl ${className}`}
+        className={`relative z-10 w-full max-w-lg rounded-xl border border-neutral-800 bg-neutral-900 shadow-2xl ${className}`}
         role="dialog"
         aria-modal="true"
       >
         {title && (
-          <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
-            <h2 className="text-base font-semibold text-slate-100">{title}</h2>
-            <button onClick={onClose} className="text-slate-500 hover:text-slate-200" aria-label="Close">
+          <div className="flex items-center justify-between border-b border-neutral-800 px-5 py-4">
+            <h2 className="text-base font-semibold text-neutral-100">{title}</h2>
+            <button onClick={onClose} className="text-neutral-500 hover:text-neutral-200" aria-label="Close">
               &times;
             </button>
           </div>
         )}
         <div className="p-5">{children}</div>
-        {footer && <div className="flex justify-end gap-2 border-t border-slate-800 px-5 py-4">{footer}</div>}
+        {footer && <div className="flex justify-end gap-2 border-t border-neutral-800 px-5 py-4">{footer}</div>}
       </div>
     </div>
   )

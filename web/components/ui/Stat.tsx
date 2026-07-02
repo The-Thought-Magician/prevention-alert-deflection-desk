@@ -9,7 +9,7 @@ interface StatProps {
 }
 
 const valueTones = {
-  default: 'text-slate-100',
+  default: 'text-neutral-100',
   orange: 'text-orange-400',
   green: 'text-emerald-400',
   red: 'text-red-400',
@@ -17,10 +17,10 @@ const valueTones = {
 
 export function Stat({ label, value, sub, tone = 'default', className = '' }: StatProps) {
   return (
-    <div className={`rounded-xl border border-slate-800 bg-slate-900/80 p-5 ${className}`}>
-      <div className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</div>
+    <div className={`rounded-xl border border-neutral-800 bg-neutral-900/80 p-5 ${className}`}>
+      <div className="text-xs font-medium uppercase tracking-wide text-neutral-500">{label}</div>
       <div className={`mt-2 text-2xl font-semibold ${valueTones[tone]}`}>{value}</div>
-      {sub != null && <div className="mt-1 text-sm text-slate-400">{sub}</div>}
+      {sub != null && <div className="mt-1 text-sm text-neutral-400">{sub}</div>}
     </div>
   )
 }

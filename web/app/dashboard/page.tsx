@@ -91,10 +91,10 @@ function RatioGauge({ ratio, threshold }: { ratio: number; threshold: number }) 
         {/* threshold marker */}
         <line x1={cx} y1={cy} x2={tx} y2={ty} stroke="#fb923c" strokeWidth="2" strokeDasharray="3 3" />
         <circle cx={tx} cy={ty} r="4" fill="#fb923c" />
-        <text x="100" y="92" textAnchor="middle" className="fill-slate-100" fontSize="22" fontWeight="700">
+        <text x="100" y="92" textAnchor="middle" className="fill-neutral-100" fontSize="22" fontWeight="700">
           {pct(display)}
         </text>
-        <text x="100" y="110" textAnchor="middle" className="fill-slate-500" fontSize="9">
+        <text x="100" y="110" textAnchor="middle" className="fill-neutral-500" fontSize="9">
           threshold {pct(thr)}
         </text>
       </svg>
@@ -239,8 +239,8 @@ export default function DashboardPage() {
     return (
       <div className="mx-auto max-w-2xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-100">Welcome to the Deflection Desk</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-neutral-100">Welcome to the Deflection Desk</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Create a workspace to start triaging prevention alerts, or join an existing team with an invite code.
           </p>
         </div>
@@ -257,25 +257,25 @@ export default function DashboardPage() {
         <div className="grid gap-5 sm:grid-cols-2">
           <Card>
             <CardHeader>
-              <h2 className="text-base font-semibold text-slate-100">Create workspace</h2>
+              <h2 className="text-base font-semibold text-neutral-100">Create workspace</h2>
             </CardHeader>
             <CardBody>
               <form onSubmit={onCreate} className="space-y-3">
                 <div>
-                  <label className="mb-1 block text-xs text-slate-400">Name</label>
+                  <label className="mb-1 block text-xs text-neutral-400">Name</label>
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Acme Disputes"
-                    className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-orange-500"
+                    className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 outline-none focus:border-orange-500"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-xs text-slate-400">Default currency</label>
+                  <label className="mb-1 block text-xs text-neutral-400">Default currency</label>
                   <select
                     value={currency}
                     onChange={(e) => setCurrency(e.target.value)}
-                    className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-orange-500"
+                    className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 outline-none focus:border-orange-500"
                   >
                     {['USD', 'EUR', 'GBP', 'CAD', 'AUD'].map((c) => (
                       <option key={c} value={c}>
@@ -292,17 +292,17 @@ export default function DashboardPage() {
           </Card>
           <Card>
             <CardHeader>
-              <h2 className="text-base font-semibold text-slate-100">Join with invite</h2>
+              <h2 className="text-base font-semibold text-neutral-100">Join with invite</h2>
             </CardHeader>
             <CardBody>
               <form onSubmit={onJoin} className="space-y-3">
                 <div>
-                  <label className="mb-1 block text-xs text-slate-400">Invite code</label>
+                  <label className="mb-1 block text-xs text-neutral-400">Invite code</label>
                   <input
                     value={invite}
                     onChange={(e) => setInvite(e.target.value)}
                     placeholder="ABC123"
-                    className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm uppercase text-slate-100 outline-none focus:border-orange-500"
+                    className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm uppercase text-neutral-100 outline-none focus:border-orange-500"
                   />
                 </div>
                 <Button type="submit" variant="secondary" disabled={busy === 'join' || !invite.trim()} className="w-full">
@@ -332,14 +332,14 @@ export default function DashboardPage() {
       {/* header + workspace switcher */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100">Overview</h1>
-          <p className="text-sm text-slate-400">Chargeback ratio guardrail, ROI, and the deflection deadline queue.</p>
+          <h1 className="text-2xl font-bold text-neutral-100">Overview</h1>
+          <p className="text-sm text-neutral-400">Chargeback ratio guardrail, ROI, and the deflection deadline queue.</p>
         </div>
         <div className="flex items-center gap-2">
           <select
             value={wsId ?? ''}
             onChange={(e) => onSelectWs(e.target.value)}
-            className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-orange-500"
+            className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 outline-none focus:border-orange-500"
           >
             {workspaces.map((w) => (
               <option key={w.id} value={w.id}>
@@ -383,7 +383,7 @@ export default function DashboardPage() {
             <Card className="lg:col-span-1">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-semibold text-slate-100">Chargeback Ratio</h2>
+                  <h2 className="text-base font-semibold text-neutral-100">Chargeback Ratio</h2>
                   <Link href="/dashboard/ratio" className="text-xs text-orange-400 hover:text-orange-300">
                     View guardrail →
                   </Link>
@@ -393,9 +393,9 @@ export default function DashboardPage() {
                 <RatioGauge ratio={overallRatio} threshold={threshold} />
                 <div className="mt-4 grid grid-cols-3 gap-2 text-center">
                   {(ratio?.byNetwork ?? []).slice(0, 3).map((n: any) => (
-                    <div key={n.network} className="rounded-lg border border-slate-800 bg-slate-950/60 p-2">
-                      <div className="text-[10px] uppercase tracking-wide text-slate-500">{n.network}</div>
-                      <div className="text-sm font-semibold text-slate-200">{pct(n.ratio)}</div>
+                    <div key={n.network} className="rounded-lg border border-neutral-800 bg-neutral-950/60 p-2">
+                      <div className="text-[10px] uppercase tracking-wide text-neutral-500">{n.network}</div>
+                      <div className="text-sm font-semibold text-neutral-200">{pct(n.ratio)}</div>
                     </div>
                   ))}
                 </div>
@@ -433,7 +433,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-semibold text-slate-100">Deadline queue</h2>
+                <h2 className="text-base font-semibold text-neutral-100">Deadline queue</h2>
                 <Link href="/dashboard/deadlines" className="text-xs text-orange-400 hover:text-orange-300">
                   Full board →
                 </Link>
@@ -446,7 +446,7 @@ export default function DashboardPage() {
                 <Badge tone="green">Safe {safe.length}</Badge>
               </div>
               {critical.length + warning.length === 0 ? (
-                <p className="text-sm text-slate-500">No alerts approaching their deflection deadline.</p>
+                <p className="text-sm text-neutral-500">No alerts approaching their deflection deadline.</p>
               ) : (
                 <Table>
                   <THead>
@@ -468,7 +468,7 @@ export default function DashboardPage() {
                         </TD>
                         <TD className="uppercase">{a.network}</TD>
                         <TD>{money(a.amount_cents, a.currency ?? currencyCode)}</TD>
-                        <TD className="text-slate-400">
+                        <TD className="text-neutral-400">
                           {a.deadline_at ? new Date(a.deadline_at).toLocaleString() : '—'}
                         </TD>
                         <TD>
@@ -486,7 +486,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-semibold text-slate-100">Recent alerts</h2>
+                <h2 className="text-base font-semibold text-neutral-100">Recent alerts</h2>
                 <Link href="/dashboard/alerts" className="text-xs text-orange-400 hover:text-orange-300">
                   Triage queue →
                 </Link>
@@ -494,7 +494,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardBody>
               {recentAlerts.length === 0 ? (
-                <p className="text-sm text-slate-500">No alerts received yet.</p>
+                <p className="text-sm text-neutral-500">No alerts received yet.</p>
               ) : (
                 <Table>
                   <THead>
@@ -518,7 +518,7 @@ export default function DashboardPage() {
                         </TD>
                         <TD className="uppercase">{a.network}</TD>
                         <TD>{a.alert_type}</TD>
-                        <TD className="text-slate-400">
+                        <TD className="text-neutral-400">
                           {a.reason_code}
                           {a.reason_category ? ` · ${a.reason_category}` : ''}
                         </TD>
@@ -538,7 +538,7 @@ export default function DashboardPage() {
                             {a.is_duplicate ? 'duplicate' : a.status}
                           </Badge>
                         </TD>
-                        <TD className="text-slate-400">
+                        <TD className="text-neutral-400">
                           {a.received_at ? new Date(a.received_at).toLocaleDateString() : '—'}
                         </TD>
                       </TR>

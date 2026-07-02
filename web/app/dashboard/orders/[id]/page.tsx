@@ -209,7 +209,7 @@ export default function OrderDetailPage() {
           >
             ← Back to orders
           </Link>
-          <h1 className="mt-2 text-2xl font-semibold text-slate-100">
+          <h1 className="mt-2 text-2xl font-semibold text-neutral-100">
             Order {order.external_order_id}
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -255,7 +255,7 @@ export default function OrderDetailPage() {
 
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Order details</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Order details</h2>
         </CardHeader>
         <CardBody>
           <dl className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -268,10 +268,10 @@ export default function OrderDetailPage() {
           </dl>
           {order.metadata && Object.keys(order.metadata).length > 0 && (
             <div className="mt-5">
-              <div className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+              <div className="mb-1 text-xs font-medium uppercase tracking-wide text-neutral-500">
                 Metadata
               </div>
-              <pre className="overflow-x-auto rounded-lg border border-slate-800 bg-slate-950/60 p-3 text-xs text-slate-300">
+              <pre className="overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-950/60 p-3 text-xs text-neutral-300">
                 {JSON.stringify(order.metadata, null, 2)}
               </pre>
             </div>
@@ -282,7 +282,7 @@ export default function OrderDetailPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-slate-200">Linked alerts</h2>
+            <h2 className="text-sm font-semibold text-neutral-200">Linked alerts</h2>
             <Badge tone="orange">{alerts.length}</Badge>
           </div>
         </CardHeader>
@@ -313,9 +313,9 @@ export default function OrderDetailPage() {
                     <TD>{a.network || '—'}</TD>
                     <TD>{a.alert_type || '—'}</TD>
                     <TD>
-                      <span className="text-slate-200">{a.reason_code || '—'}</span>
+                      <span className="text-neutral-200">{a.reason_code || '—'}</span>
                       {a.reason_category && (
-                        <span className="ml-1 text-xs text-slate-500">{a.reason_category}</span>
+                        <span className="ml-1 text-xs text-neutral-500">{a.reason_category}</span>
                       )}
                     </TD>
                     <TD>{money(a.amount_cents, a.currency || cur)}</TD>
@@ -342,7 +342,7 @@ export default function OrderDetailPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-slate-200">Refunds</h2>
+            <h2 className="text-sm font-semibold text-neutral-200">Refunds</h2>
             <Badge tone="red">{refunds.length}</Badge>
           </div>
         </CardHeader>
@@ -367,7 +367,7 @@ export default function OrderDetailPage() {
               <TBody>
                 {refunds.map((r) => (
                   <TR key={r.id}>
-                    <TD className="font-medium text-slate-100">
+                    <TD className="font-medium text-neutral-100">
                       {money(r.amount_cents, r.currency || cur)}
                     </TD>
                     <TD>{r.method || '—'}</TD>
@@ -451,7 +451,7 @@ export default function OrderDetailPage() {
             </FormField>
           </div>
           <div className="flex gap-6">
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 className="h-4 w-4 accent-orange-500"
@@ -460,7 +460,7 @@ export default function OrderDetailPage() {
               />
               Recoverable
             </label>
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-neutral-300">
               <input
                 type="checkbox"
                 className="h-4 w-4 accent-orange-500"
@@ -477,13 +477,13 @@ export default function OrderDetailPage() {
 }
 
 const inputCls =
-  'w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:border-orange-500 focus:outline-none'
+  'w-full rounded-lg border border-neutral-700 bg-neutral-950/60 px-3 py-2 text-sm text-neutral-100 placeholder-neutral-600 focus:border-orange-500 focus:outline-none'
 
 function Field({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div>
-      <dt className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</dt>
-      <dd className={`mt-1 text-sm text-slate-200 ${mono ? 'font-mono' : ''}`}>{value}</dd>
+      <dt className="text-xs font-medium uppercase tracking-wide text-neutral-500">{label}</dt>
+      <dd className={`mt-1 text-sm text-neutral-200 ${mono ? 'font-mono' : ''}`}>{value}</dd>
     </div>
   )
 }
@@ -491,7 +491,7 @@ function Field({ label, value, mono }: { label: string; value: string; mono?: bo
 function FormField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
         {label}
       </span>
       {children}

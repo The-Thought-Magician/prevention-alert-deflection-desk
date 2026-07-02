@@ -284,8 +284,8 @@ export default function ReasonCodesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Reason codes</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-neutral-100">Reason codes</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             The deflection playbook: per-network reason codes, their deflectability, and how often each one shows up in your alert volume.
           </p>
         </div>
@@ -305,11 +305,11 @@ export default function ReasonCodesPage() {
 
       <Card>
         <CardHeader>
-          <div className="text-sm font-semibold text-slate-200">Top reason codes by alert volume</div>
+          <div className="text-sm font-semibold text-neutral-200">Top reason codes by alert volume</div>
         </CardHeader>
         <CardBody>
           {chartData.rows.length === 0 ? (
-            <p className="py-6 text-center text-sm text-slate-500">
+            <p className="py-6 text-center text-sm text-neutral-500">
               No alert statistics yet. Sync a feed or upload alerts to populate reason code volume.
             </p>
           ) : (
@@ -319,10 +319,10 @@ export default function ReasonCodesPage() {
                 const deflPct = r.count > 0 ? (r.deflected / r.count) * 100 : 0
                 return (
                   <div key={`${r.network}-${r.label}`} className="flex items-center gap-3">
-                    <div className="w-28 shrink-0 truncate text-xs font-medium text-slate-300" title={r.label}>
+                    <div className="w-28 shrink-0 truncate text-xs font-medium text-neutral-300" title={r.label}>
                       {r.label}
                     </div>
-                    <div className="relative h-6 flex-1 overflow-hidden rounded-md bg-slate-800">
+                    <div className="relative h-6 flex-1 overflow-hidden rounded-md bg-neutral-800">
                       <div
                         className="absolute inset-y-0 left-0 rounded-md bg-orange-500/30"
                         style={{ width: `${pct}%` }}
@@ -331,14 +331,14 @@ export default function ReasonCodesPage() {
                         className="absolute inset-y-0 left-0 rounded-md bg-emerald-500/50"
                         style={{ width: `${(pct * deflPct) / 100}%` }}
                       />
-                      <div className="absolute inset-0 flex items-center justify-end pr-2 text-xs tabular-nums text-slate-200">
+                      <div className="absolute inset-0 flex items-center justify-end pr-2 text-xs tabular-nums text-neutral-200">
                         {r.count} ({Math.round(deflPct)}% deflected)
                       </div>
                     </div>
                   </div>
                 )
               })}
-              <div className="flex items-center gap-4 pt-1 text-xs text-slate-500">
+              <div className="flex items-center gap-4 pt-1 text-xs text-neutral-500">
                 <span className="flex items-center gap-1.5">
                   <span className="inline-block h-2.5 w-2.5 rounded-sm bg-orange-500/30" /> Total alerts
                 </span>
@@ -353,18 +353,18 @@ export default function ReasonCodesPage() {
 
       <Card>
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm font-semibold text-slate-200">Library</div>
+          <div className="text-sm font-semibold text-neutral-200">Library</div>
           <div className="flex flex-wrap items-center gap-2">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search codes..."
-              className="w-44 rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-44 rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
             <select
               value={networkFilter}
               onChange={(e) => setNetworkFilter(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All networks</option>
               {NETWORKS.map((n) => (
@@ -376,7 +376,7 @@ export default function ReasonCodesPage() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All categories</option>
               {CATEGORIES.map((c) => (
@@ -424,20 +424,20 @@ export default function ReasonCodesPage() {
                       <TD>
                         <Badge tone={networkTone(c.network)}>{c.network}</Badge>
                       </TD>
-                      <TD className="font-mono text-slate-100">{c.code}</TD>
+                      <TD className="font-mono text-neutral-100">{c.code}</TD>
                       <TD>
-                        <div className="text-slate-200">{c.description}</div>
+                        <div className="text-neutral-200">{c.description}</div>
                         {c.recommended_handling && (
-                          <div className="mt-0.5 text-xs text-slate-500">{c.recommended_handling}</div>
+                          <div className="mt-0.5 text-xs text-neutral-500">{c.recommended_handling}</div>
                         )}
                       </TD>
                       <TD>
-                        <span className="text-xs text-slate-400">{c.category}</span>
+                        <span className="text-xs text-neutral-400">{c.category}</span>
                       </TD>
                       <TD>
                         <Badge tone={deflectTone(c.typical_deflectability)}>{deflectLabel(c.typical_deflectability)}</Badge>
                       </TD>
-                      <TD className="text-right tabular-nums text-slate-200">{count}</TD>
+                      <TD className="text-right tabular-nums text-neutral-200">{count}</TD>
                       <TD className="text-right tabular-nums text-emerald-300">{defl}</TD>
                       <TD className="text-right">
                         <Button variant="ghost" className="px-2.5 py-1 text-xs" onClick={() => openEdit(c)}>
@@ -474,12 +474,12 @@ export default function ReasonCodesPage() {
           )}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Network</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Network</label>
               <select
                 value={form.network}
                 onChange={(e) => setForm((f) => ({ ...f, network: e.target.value }))}
                 disabled={!!editing}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none disabled:opacity-60"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none disabled:opacity-60"
               >
                 {NETWORKS.map((n) => (
                   <option key={n} value={n}>
@@ -489,32 +489,32 @@ export default function ReasonCodesPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Code</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Code</label>
               <input
                 value={form.code}
                 onChange={(e) => setForm((f) => ({ ...f, code: e.target.value }))}
                 disabled={!!editing}
                 placeholder="13.1"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none disabled:opacity-60"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none disabled:opacity-60"
               />
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Description</label>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Description</label>
             <input
               value={form.description}
               onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
               placeholder="Merchandise / services not received"
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Category</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Category</label>
               <select
                 value={form.category}
                 onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>
@@ -524,11 +524,11 @@ export default function ReasonCodesPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Typical deflectability</label>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Typical deflectability</label>
               <select
                 value={form.typical_deflectability}
                 onChange={(e) => setForm((f) => ({ ...f, typical_deflectability: Number(e.target.value) }))}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
               >
                 {DEFLECTABILITY_OPTIONS.map((d) => (
                   <option key={d.label} value={d.value}>
@@ -539,13 +539,13 @@ export default function ReasonCodesPage() {
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">Recommended handling</label>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">Recommended handling</label>
             <textarea
               value={form.recommended_handling}
               onChange={(e) => setForm((f) => ({ ...f, recommended_handling: e.target.value }))}
               rows={2}
               placeholder="Refund immediately to deflect; chargeback cost exceeds margin."
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
             />
           </div>
         </form>

@@ -295,8 +295,8 @@ export default function NewAlertPage() {
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-slate-100">New Alert</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-xl font-semibold text-neutral-100">New Alert</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Enter a deflection alert manually, or upload a CSV exported from Ethoca / Verifi / Visa RDR.
           </p>
         </div>
@@ -305,11 +305,11 @@ export default function NewAlertPage() {
         </Link>
       </div>
 
-      <div className="inline-flex rounded-lg border border-slate-800 bg-slate-900/60 p-1">
+      <div className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900/60 p-1">
         <button
           onClick={() => setMode('manual')}
           className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
-            mode === 'manual' ? 'bg-orange-600 text-white' : 'text-slate-400 hover:text-slate-100'
+            mode === 'manual' ? 'bg-orange-600 text-white' : 'text-neutral-400 hover:text-neutral-100'
           }`}
         >
           Manual entry
@@ -317,7 +317,7 @@ export default function NewAlertPage() {
         <button
           onClick={() => setMode('bulk')}
           className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
-            mode === 'bulk' ? 'bg-orange-600 text-white' : 'text-slate-400 hover:text-slate-100'
+            mode === 'bulk' ? 'bg-orange-600 text-white' : 'text-neutral-400 hover:text-neutral-100'
           }`}
         >
           Bulk CSV upload
@@ -327,7 +327,7 @@ export default function NewAlertPage() {
       {mode === 'manual' ? (
         <Card>
           <CardHeader>
-            <h2 className="text-sm font-semibold text-slate-200">Manual alert entry</h2>
+            <h2 className="text-sm font-semibold text-neutral-200">Manual alert entry</h2>
           </CardHeader>
           <CardBody>
             <form onSubmit={submitManual} className="space-y-5">
@@ -433,8 +433,8 @@ export default function NewAlertPage() {
               </div>
 
               {selectedOrder && (
-                <div className="rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-3 text-sm text-slate-400">
-                  Linked to order <span className="text-slate-200">{selectedOrder.external_order_id ?? selectedOrder.id}</span>
+                <div className="rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-3 text-sm text-neutral-400">
+                  Linked to order <span className="text-neutral-200">{selectedOrder.external_order_id ?? selectedOrder.id}</span>
                   {selectedOrder.product ? <> · {selectedOrder.product}</> : null}
                   {' · '}{money(selectedOrder.amount_cents, selectedOrder.currency)}
                 </div>
@@ -471,25 +471,25 @@ export default function NewAlertPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <h2 className="text-sm font-semibold text-slate-200">Bulk CSV upload</h2>
+              <h2 className="text-sm font-semibold text-neutral-200">Bulk CSV upload</h2>
             </CardHeader>
             <CardBody className="space-y-4">
-              <div className="rounded-lg border border-slate-800 bg-slate-900/60 px-4 py-3 text-xs text-slate-400">
-                <div className="mb-1 font-medium text-slate-300">Expected columns (header row, comma separated):</div>
+              <div className="rounded-lg border border-neutral-800 bg-neutral-900/60 px-4 py-3 text-xs text-neutral-400">
+                <div className="mb-1 font-medium text-neutral-300">Expected columns (header row, comma separated):</div>
                 <code className="break-words text-orange-300">{BULK_COLUMNS.join(', ')}</code>
-                <div className="mt-2 text-slate-500">
-                  Only <span className="text-slate-300">network</span> and{' '}
-                  <span className="text-slate-300">external_alert_id</span> are required. Orders are
+                <div className="mt-2 text-neutral-500">
+                  Only <span className="text-neutral-300">network</span> and{' '}
+                  <span className="text-neutral-300">external_alert_id</span> are required. Orders are
                   auto-matched server-side by ARN / card last4.
                 </div>
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:bg-slate-700">
+                <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-200 transition-colors hover:bg-neutral-700">
                   Choose CSV file
                   <input type="file" accept=".csv,text/csv" onChange={onFileUpload} className="hidden" />
                 </label>
-                <span className="text-xs text-slate-500">or paste rows below</span>
+                <span className="text-xs text-neutral-500">or paste rows below</span>
               </div>
 
               <textarea
@@ -497,7 +497,7 @@ export default function NewAlertPage() {
                 onChange={(e) => handleParse(e.target.value)}
                 rows={6}
                 placeholder={`${BULK_COLUMNS.join(',')}\nethoca,confirmed_fraud,ETH-1001,74000...,4242,4999,USD,10.4,fraud,2026-06-30T10:00:00Z`}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 font-mono text-xs text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none"
+                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-xs text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none"
               />
 
               {parseError && (
@@ -531,7 +531,7 @@ export default function NewAlertPage() {
           {parsed.length > 0 && (
             <Card>
               <CardHeader>
-                <h2 className="text-sm font-semibold text-slate-200">Preview ({parsed.length} rows)</h2>
+                <h2 className="text-sm font-semibold text-neutral-200">Preview ({parsed.length} rows)</h2>
               </CardHeader>
               <CardBody className="p-0">
                 <Table>
@@ -551,7 +551,7 @@ export default function NewAlertPage() {
                   </TBody>
                 </Table>
                 {parsed.length > 50 && (
-                  <div className="px-4 py-3 text-xs text-slate-500">
+                  <div className="px-4 py-3 text-xs text-neutral-500">
                     Showing first 50 of {parsed.length} rows. All rows will be uploaded.
                   </div>
                 )}
@@ -565,12 +565,12 @@ export default function NewAlertPage() {
 }
 
 const inputCls =
-  'w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600 focus:border-orange-500 focus:outline-none'
+  'w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none'
 
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium text-slate-400">
+      <span className="mb-1 block text-xs font-medium text-neutral-400">
         {label}{required && <span className="text-orange-400"> *</span>}
       </span>
       {children}

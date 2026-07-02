@@ -220,8 +220,8 @@ export default function TeamPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Team</h1>
-          <p className="mt-1 text-sm text-slate-400">Manage workspace membership, roles, and invite access.</p>
+          <h1 className="text-2xl font-semibold text-neutral-100">Team</h1>
+          <p className="mt-1 text-sm text-neutral-400">Manage workspace membership, roles, and invite access.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" onClick={() => setJoinOpen(true)}>
@@ -246,24 +246,24 @@ export default function TeamPage() {
       {/* Workspace summary */}
       <Card className="mt-6">
         <CardHeader>
-          <h2 className="text-base font-semibold text-slate-100">Workspace</h2>
+          <h2 className="text-base font-semibold text-neutral-100">Workspace</h2>
         </CardHeader>
         <CardBody>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <div className="text-xs uppercase tracking-wide text-slate-500">Name</div>
-              <div className="mt-1 text-lg font-semibold text-slate-100">{workspace?.name ?? '—'}</div>
+              <div className="text-xs uppercase tracking-wide text-neutral-500">Name</div>
+              <div className="mt-1 text-lg font-semibold text-neutral-100">{workspace?.name ?? '—'}</div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wide text-slate-500">Default currency</div>
-              <div className="mt-1 text-lg font-semibold text-slate-100">{workspace?.default_currency ?? '—'}</div>
+              <div className="text-xs uppercase tracking-wide text-neutral-500">Default currency</div>
+              <div className="mt-1 text-lg font-semibold text-neutral-100">{workspace?.default_currency ?? '—'}</div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wide text-slate-500">Created</div>
-              <div className="mt-1 text-lg font-semibold text-slate-100">{fmtDate(workspace?.created_at)}</div>
+              <div className="text-xs uppercase tracking-wide text-neutral-500">Created</div>
+              <div className="mt-1 text-lg font-semibold text-neutral-100">{fmtDate(workspace?.created_at)}</div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wide text-slate-500">Invite code</div>
+              <div className="text-xs uppercase tracking-wide text-neutral-500">Invite code</div>
               <div className="mt-1 flex items-center gap-2">
                 <code className="rounded-md border border-orange-500/30 bg-orange-500/10 px-2.5 py-1 font-mono text-sm font-semibold text-orange-300">
                   {workspace?.invite_code ?? '—'}
@@ -276,9 +276,9 @@ export default function TeamPage() {
               </div>
             </div>
           </div>
-          <p className="mt-4 text-sm text-slate-400">
+          <p className="mt-4 text-sm text-neutral-400">
             Share the invite code with teammates. They can join from their own Team page using
-            <span className="font-medium text-slate-300"> Join workspace</span>.
+            <span className="font-medium text-neutral-300"> Join workspace</span>.
           </p>
         </CardBody>
       </Card>
@@ -292,7 +292,7 @@ export default function TeamPage() {
       {/* Members table */}
       <Card className="mt-6">
         <CardHeader>
-          <h2 className="text-base font-semibold text-slate-100">Members</h2>
+          <h2 className="text-base font-semibold text-neutral-100">Members</h2>
         </CardHeader>
         <CardBody className="p-0">
           {members.length === 0 ? (
@@ -315,7 +315,7 @@ export default function TeamPage() {
                   const isMemberOwner = (m.role || '').toLowerCase() === 'owner'
                   return (
                     <TR key={m.id}>
-                      <TD className="font-mono text-xs text-slate-300">
+                      <TD className="font-mono text-xs text-neutral-300">
                         {m.user_id}
                         {isSelf && (
                           <Badge tone="slate" className="ml-2">
@@ -326,7 +326,7 @@ export default function TeamPage() {
                       <TD>
                         <Badge tone={roleTone(m.role)}>{m.role || 'member'}</Badge>
                       </TD>
-                      <TD className="whitespace-nowrap text-slate-400">{fmtDate(m.joined_at)}</TD>
+                      <TD className="whitespace-nowrap text-neutral-400">{fmtDate(m.joined_at)}</TD>
                       <TD className="text-right">
                         {isOwner && !isSelf && !(isMemberOwner && ownerCount <= 1) ? (
                           <Button
@@ -337,7 +337,7 @@ export default function TeamPage() {
                             Remove
                           </Button>
                         ) : (
-                          <span className="text-xs text-slate-600">—</span>
+                          <span className="text-xs text-neutral-600">—</span>
                         )}
                       </TD>
                     </TR>
@@ -370,19 +370,19 @@ export default function TeamPage() {
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">{editError}</div>
           )}
           <div>
-            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-500">Workspace name</label>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-neutral-500">Workspace name</label>
             <input
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-500">Default currency</label>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-neutral-500">Default currency</label>
             <select
               value={editCurrency}
               onChange={(e) => setEditCurrency(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               {['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY'].map((c) => (
                 <option key={c} value={c}>
@@ -421,8 +421,8 @@ export default function TeamPage() {
           </>
         }
       >
-        <p className="text-sm text-slate-300">
-          Remove member <span className="font-mono text-slate-100">{removeTarget?.user_id}</span> from this workspace? They
+        <p className="text-sm text-neutral-300">
+          Remove member <span className="font-mono text-neutral-100">{removeTarget?.user_id}</span> from this workspace? They
           will lose access immediately.
         </p>
       </Modal>
@@ -468,17 +468,17 @@ function JoinModal({
           <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</div>
         )}
         <div>
-          <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-500">Invite code</label>
+          <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-neutral-500">Invite code</label>
           <input
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder="e.g. PADD-XXXX"
-            className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 font-mono text-sm text-slate-200 placeholder-slate-500 focus:border-orange-500 focus:outline-none"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-sm text-neutral-200 placeholder-neutral-500 focus:border-orange-500 focus:outline-none"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && code.trim() && !joining) onSubmit()
             }}
           />
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-xs text-neutral-500">
             Joining sets this workspace as your active workspace across the dashboard.
           </p>
         </div>

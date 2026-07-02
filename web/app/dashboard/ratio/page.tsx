@@ -200,8 +200,8 @@ export default function RatioPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-100">Chargeback Ratio Guardrail</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-bold text-neutral-100">Chargeback Ratio Guardrail</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Live dispute-to-transaction ratio against Visa VDMP and Mastercard ECP thresholds, with end-of-period projection and trend.
           </p>
         </div>
@@ -251,11 +251,11 @@ export default function RatioPage() {
       {/* Program threshold cards (VDMP / ECP) */}
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Program guardrails</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Program guardrails</h2>
         </CardHeader>
         <CardBody>
           {thresholds.length === 0 ? (
-            <p className="text-sm text-slate-400">No thresholds configured for this workspace.</p>
+            <p className="text-sm text-neutral-400">No thresholds configured for this workspace.</p>
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {[
@@ -268,21 +268,21 @@ export default function RatioPage() {
                 const band = bandFor(netRatio, t?.standard_ratio, t?.excessive_ratio)
                 const stdW = t?.standard_ratio ? Math.min(100, (netRatio ?? 0) / t.standard_ratio * 100) : 0
                 return (
-                  <div key={title} className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+                  <div key={title} className="rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-slate-100">{title}</span>
+                      <span className="text-sm font-semibold text-neutral-100">{title}</span>
                       <Badge tone={band.tone}>{band.label}</Badge>
                     </div>
                     {t ? (
                       <>
                         <div className="mt-3 flex items-baseline gap-2">
-                          <span className="text-2xl font-semibold text-slate-100">{pct(netRatio)}</span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-2xl font-semibold text-neutral-100">{pct(netRatio)}</span>
+                          <span className="text-xs text-neutral-500">
                             standard {pct(t.standard_ratio)} · excessive {pct(t.excessive_ratio)}
                           </span>
                         </div>
                         {/* progress vs standard threshold */}
-                        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800">
+                        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-neutral-800">
                           <div
                             className={`h-full ${
                               band.tone === 'red'
@@ -294,7 +294,7 @@ export default function RatioPage() {
                             style={{ width: `${stdW}%` }}
                           />
                         </div>
-                        <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-400">
+                        <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-neutral-400">
                           <span>Min count: {(t.standard_count ?? 0).toLocaleString()}</span>
                           <span>SLA window: {t.sla_window_hours ?? '—'}h</span>
                           <span>
@@ -305,7 +305,7 @@ export default function RatioPage() {
                         </div>
                       </>
                     ) : (
-                      <p className="mt-3 text-sm text-slate-500">No threshold configured for this program.</p>
+                      <p className="mt-3 text-sm text-neutral-500">No threshold configured for this program.</p>
                     )}
                   </div>
                 )
@@ -318,7 +318,7 @@ export default function RatioPage() {
       {/* Per-network breakdown */}
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Ratio by network</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Ratio by network</h2>
         </CardHeader>
         <CardBody className="p-0">
           {(current?.byNetwork ?? []).length === 0 ? (
@@ -344,7 +344,7 @@ export default function RatioPage() {
                   const band = bandFor(n.ratio, t?.standard_ratio, t?.excessive_ratio)
                   return (
                     <TR key={n.network ?? i}>
-                      <TD className="font-medium text-slate-100">{n.network ?? '—'}</TD>
+                      <TD className="font-medium text-neutral-100">{n.network ?? '—'}</TD>
                       <TD>{(n.transaction_count ?? 0).toLocaleString()}</TD>
                       <TD>{(n.chargeback_count ?? 0).toLocaleString()}</TD>
                       <TD>{pct(n.ratio)}</TD>
@@ -364,7 +364,7 @@ export default function RatioPage() {
       {projection?.scenarios && projection.scenarios.length > 0 && (
         <Card>
           <CardHeader>
-            <h2 className="text-sm font-semibold text-slate-200">Projection scenarios</h2>
+            <h2 className="text-sm font-semibold text-neutral-200">Projection scenarios</h2>
           </CardHeader>
           <CardBody>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -372,13 +372,13 @@ export default function RatioPage() {
                 const r = s.ratio ?? s.projected
                 const band = bandFor(r, strictestStd, strictestExc)
                 return (
-                  <div key={i} className="rounded-lg border border-slate-800 bg-slate-950/40 p-4">
+                  <div key={i} className="rounded-lg border border-neutral-800 bg-neutral-950/40 p-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-slate-200">{s.label ?? s.name ?? `Scenario ${i + 1}`}</span>
+                      <span className="text-sm font-medium text-neutral-200">{s.label ?? s.name ?? `Scenario ${i + 1}`}</span>
                       <Badge tone={band.tone}>{band.label}</Badge>
                     </div>
-                    <div className="mt-2 text-xl font-semibold text-slate-100">{pct(r)}</div>
-                    {s.description && <p className="mt-1 text-xs text-slate-400">{s.description}</p>}
+                    <div className="mt-2 text-xl font-semibold text-neutral-100">{pct(r)}</div>
+                    {s.description && <p className="mt-1 text-xs text-neutral-400">{s.description}</p>}
                   </div>
                 )
               })}
@@ -391,11 +391,11 @@ export default function RatioPage() {
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-slate-200">Ratio trend</h2>
+            <h2 className="text-sm font-semibold text-neutral-200">Ratio trend</h2>
             <select
               value={networkFilter}
               onChange={(e) => setNetworkFilter(e.target.value)}
-              className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+              className="rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
             >
               <option value="all">All networks</option>
               {networks.map((n) => (
@@ -430,7 +430,7 @@ export default function RatioPage() {
       {/* Snapshot history table */}
       <Card>
         <CardHeader>
-          <h2 className="text-sm font-semibold text-slate-200">Snapshot history</h2>
+          <h2 className="text-sm font-semibold text-neutral-200">Snapshot history</h2>
         </CardHeader>
         <CardBody className="p-0">
           {filteredSnapshots.length === 0 ? (
@@ -453,7 +453,7 @@ export default function RatioPage() {
                 {[...filteredSnapshots].reverse().map((s, i) => (
                   <TR key={s.id ?? i}>
                     <TD>{s.created_at ? new Date(s.created_at).toLocaleString() : '—'}</TD>
-                    <TD className="text-slate-100">{s.network ?? 'overall'}</TD>
+                    <TD className="text-neutral-100">{s.network ?? 'overall'}</TD>
                     <TD>{s.period ?? '—'}</TD>
                     <TD>{(s.transaction_count ?? 0).toLocaleString()}</TD>
                     <TD>{(s.chargeback_count ?? 0).toLocaleString()}</TD>

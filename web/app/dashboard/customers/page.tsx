@@ -266,8 +266,8 @@ export default function CustomersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-100">Customers</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-2xl font-semibold text-neutral-100">Customers</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             History, risk scoring, and deflection watchlist.
           </p>
         </div>
@@ -291,7 +291,7 @@ export default function CustomersPage() {
                   className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
                     filter === f
                       ? 'bg-orange-500/15 text-orange-300'
-                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+                      : 'text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100'
                   }`}
                 >
                   {f === 'all' ? 'All' : f === 'watchlist' ? 'Watchlist' : 'High risk'}
@@ -300,7 +300,7 @@ export default function CustomersPage() {
             </div>
             <input
               placeholder="Search name, email, ref..."
-              className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:border-orange-500 focus:outline-none sm:w-72"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950/60 px-3 py-2 text-sm text-neutral-100 placeholder-neutral-600 focus:border-orange-500 focus:outline-none sm:w-72"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -346,12 +346,12 @@ export default function CustomersPage() {
                     <TD>
                       <button
                         onClick={() => openDetail(c.id)}
-                        className="text-left font-medium text-slate-100 hover:text-orange-300"
+                        className="text-left font-medium text-neutral-100 hover:text-orange-300"
                       >
                         {c.name || c.email || c.external_ref || 'Unnamed customer'}
                       </button>
                       {c.email && c.name && (
-                        <div className="text-xs text-slate-500">{c.email}</div>
+                        <div className="text-xs text-neutral-500">{c.email}</div>
                       )}
                     </TD>
                     <TD className="font-mono text-xs">{c.external_ref || '—'}</TD>
@@ -362,7 +362,7 @@ export default function CustomersPage() {
                       {c.is_watchlisted ? (
                         <Badge tone="orange">On watchlist</Badge>
                       ) : (
-                        <span className="text-xs text-slate-600">—</span>
+                        <span className="text-xs text-neutral-600">—</span>
                       )}
                     </TD>
                     <TD>{date(c.created_at)}</TD>
@@ -488,7 +488,7 @@ export default function CustomersPage() {
               </Badge>
               {detail.customer.is_watchlisted && <Badge tone="orange">On watchlist</Badge>}
               {detail.customer.external_ref && (
-                <span className="font-mono text-xs text-slate-500">
+                <span className="font-mono text-xs text-neutral-500">
                   {detail.customer.external_ref}
                 </span>
               )}
@@ -526,7 +526,7 @@ export default function CustomersPage() {
             </FormField>
 
             <div>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
                 Recent orders
               </div>
               {detail.orders && detail.orders.length > 0 ? (
@@ -535,21 +535,21 @@ export default function CustomersPage() {
                     <Link
                       key={o.id}
                       href={`/dashboard/orders/${o.id}`}
-                      className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2 text-sm hover:border-slate-700"
+                      className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-950/40 px-3 py-2 text-sm hover:border-neutral-700"
                     >
-                      <span className="font-mono text-slate-300">{o.external_order_id}</span>
-                      <span className="text-slate-400">{o.product || '—'}</span>
-                      <span className="text-slate-100">{money(o.amount_cents, o.currency)}</span>
+                      <span className="font-mono text-neutral-300">{o.external_order_id}</span>
+                      <span className="text-neutral-400">{o.product || '—'}</span>
+                      <span className="text-neutral-100">{money(o.amount_cents, o.currency)}</span>
                     </Link>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-slate-500">No orders on file.</p>
+                <p className="text-sm text-neutral-500">No orders on file.</p>
               )}
             </div>
 
             <div>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
                 Alert history
               </div>
               {detail.alerts && detail.alerts.length > 0 ? (
@@ -558,17 +558,17 @@ export default function CustomersPage() {
                     <Link
                       key={a.id}
                       href={`/dashboard/alerts/${a.id}`}
-                      className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2 text-sm hover:border-slate-700"
+                      className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-950/40 px-3 py-2 text-sm hover:border-neutral-700"
                     >
-                      <span className="text-slate-300">{a.network || '—'}</span>
-                      <span className="text-slate-400">{a.reason_code || '—'}</span>
+                      <span className="text-neutral-300">{a.network || '—'}</span>
+                      <span className="text-neutral-400">{a.reason_code || '—'}</span>
                       <Badge tone="slate">{a.status || 'new'}</Badge>
-                      <span className="text-slate-100">{money(a.amount_cents, a.currency)}</span>
+                      <span className="text-neutral-100">{money(a.amount_cents, a.currency)}</span>
                     </Link>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-slate-500">No alerts for this customer.</p>
+                <p className="text-sm text-neutral-500">No alerts for this customer.</p>
               )}
             </div>
           </div>
@@ -579,12 +579,12 @@ export default function CustomersPage() {
 }
 
 const inputCls =
-  'w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:border-orange-500 focus:outline-none'
+  'w-full rounded-lg border border-neutral-700 bg-neutral-950/60 px-3 py-2 text-sm text-neutral-100 placeholder-neutral-600 focus:border-orange-500 focus:outline-none'
 
 function FormField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-500">
         {label}
       </span>
       {children}
@@ -594,9 +594,9 @@ function FormField({ label, children }: { label: string; children: React.ReactNo
 
 function MiniStat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2">
-      <div className="text-xs text-slate-500">{label}</div>
-      <div className="mt-0.5 text-base font-semibold text-slate-100">{value}</div>
+    <div className="rounded-lg border border-neutral-800 bg-neutral-950/40 px-3 py-2">
+      <div className="text-xs text-neutral-500">{label}</div>
+      <div className="mt-0.5 text-base font-semibold text-neutral-100">{value}</div>
     </div>
   )
 }

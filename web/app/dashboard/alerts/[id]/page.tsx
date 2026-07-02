@@ -46,9 +46,9 @@ function DeadlineTimer({ deadline }: { deadline?: string | null }) {
     const t = setInterval(() => force((n) => n + 1), 1000)
     return () => clearInterval(t)
   }, [])
-  if (!deadline) return <span className="text-slate-500">No deadline</span>
+  if (!deadline) return <span className="text-neutral-500">No deadline</span>
   const ms = new Date(deadline).getTime() - Date.now()
-  if (Number.isNaN(ms)) return <span className="text-slate-500">—</span>
+  if (Number.isNaN(ms)) return <span className="text-neutral-500">—</span>
   const overdue = ms <= 0
   const abs = Math.abs(ms)
   const d = Math.floor(abs / 864e5)
@@ -65,7 +65,7 @@ function DeadlineTimer({ deadline }: { deadline?: string | null }) {
         {String(h).padStart(2, '0')}:{String(m).padStart(2, '0')}:{String(s).padStart(2, '0')}
       </div>
       <Badge tone={tone}>{overdue ? 'DEADLINE PASSED' : 'time remaining'}</Badge>
-      <span className="text-xs text-slate-500">{new Date(deadline).toLocaleString()}</span>
+      <span className="text-xs text-neutral-500">{new Date(deadline).toLocaleString()}</span>
     </div>
   )
 }
@@ -240,10 +240,10 @@ export default function AlertDetailPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <Link href="/dashboard/alerts" className="text-xs text-slate-500 hover:text-slate-300">
+          <Link href="/dashboard/alerts" className="text-xs text-neutral-500 hover:text-neutral-300">
             ← Triage queue
           </Link>
-          <h1 className="mt-1 text-2xl font-bold text-slate-100">
+          <h1 className="mt-1 text-2xl font-bold text-neutral-100">
             {alert.external_alert_id ?? alert.id?.slice(0, 8)}
           </h1>
           <div className="mt-1 flex flex-wrap items-center gap-2">
@@ -258,8 +258,8 @@ export default function AlertDetailPage() {
           </div>
         </div>
         <div className="text-right">
-          <div className="text-xs uppercase tracking-wide text-slate-500">Disputed amount</div>
-          <div className="text-2xl font-semibold text-slate-100">{money(alert.amount_cents, currency)}</div>
+          <div className="text-xs uppercase tracking-wide text-neutral-500">Disputed amount</div>
+          <div className="text-2xl font-semibold text-neutral-100">{money(alert.amount_cents, currency)}</div>
         </div>
       </div>
 
@@ -284,7 +284,7 @@ export default function AlertDetailPage() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-semibold text-slate-100">Decision</h2>
+                <h2 className="text-base font-semibold text-neutral-100">Decision</h2>
                 {decision?.is_override && <Badge tone="purple">overridden</Badge>}
               </div>
             </CardHeader>
@@ -293,20 +293,20 @@ export default function AlertDetailPage() {
                 <div className="space-y-4">
                   <div className="flex flex-wrap items-center gap-4">
                     <div>
-                      <div className="text-xs uppercase tracking-wide text-slate-500">Recommendation</div>
+                      <div className="text-xs uppercase tracking-wide text-neutral-500">Recommendation</div>
                       <Badge tone={recTone(decision.recommendation)} className="mt-1 text-sm">
                         {decision.recommendation}
                       </Badge>
                     </div>
                     <div>
-                      <div className="text-xs uppercase tracking-wide text-slate-500">Confidence score</div>
-                      <div className="mt-1 text-xl font-semibold text-slate-100">
+                      <div className="text-xs uppercase tracking-wide text-neutral-500">Confidence score</div>
+                      <div className="mt-1 text-xl font-semibold text-neutral-100">
                         {decision.score != null ? Number(decision.score).toFixed(2) : '—'}
                       </div>
                     </div>
                   </div>
                   {decision.score != null && (
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-800">
                       <div
                         className="h-full rounded-full bg-orange-500"
                         style={{ width: `${Math.min(Math.max(Number(decision.score) * (decision.score > 1 ? 1 : 100), 0), 100)}%` }}
@@ -314,13 +314,13 @@ export default function AlertDetailPage() {
                     </div>
                   )}
                   {decision.factors && (
-                    <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
-                      <div className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">Scoring factors</div>
+                    <div className="rounded-lg border border-neutral-800 bg-neutral-950/60 p-3">
+                      <div className="mb-2 text-xs font-medium uppercase tracking-wide text-neutral-500">Scoring factors</div>
                       <div className="grid gap-2 sm:grid-cols-2">
                         {(Array.isArray(decision.factors) ? decision.factors : []).map((f: any, i: number) => (
                           <div key={f?.name ?? i} className="flex items-center justify-between text-sm">
-                            <span className="text-slate-400">{f?.name ?? `factor ${i + 1}`}</span>
-                            <span className="font-mono text-slate-200">
+                            <span className="text-neutral-400">{f?.name ?? `factor ${i + 1}`}</span>
+                            <span className="font-mono text-neutral-200">
                               {typeof f?.contribution === 'number' ? f.contribution.toFixed(3) : String(f?.value ?? f)}
                             </span>
                           </div>
@@ -344,7 +344,7 @@ export default function AlertDetailPage() {
                 </div>
               ) : (
                 <div className="text-center">
-                  <p className="mb-4 text-sm text-slate-400">
+                  <p className="mb-4 text-sm text-neutral-400">
                     No decision yet. Run the deterministic engine to score this alert and get a recommended disposition.
                   </p>
                   <Button onClick={onEvaluate} disabled={busy === 'evaluate'}>
@@ -358,7 +358,7 @@ export default function AlertDetailPage() {
           {/* refund / deflect action */}
           <Card>
             <CardHeader>
-              <h2 className="text-base font-semibold text-slate-100">Disposition</h2>
+              <h2 className="text-base font-semibold text-neutral-100">Disposition</h2>
             </CardHeader>
             <CardBody className="space-y-4">
               <div className="flex flex-wrap gap-2">
@@ -377,7 +377,7 @@ export default function AlertDetailPage() {
                 </Button>
               </div>
               <div>
-                <div className="mb-2 text-xs uppercase tracking-wide text-slate-500">Transition status</div>
+                <div className="mb-2 text-xs uppercase tracking-wide text-neutral-500">Transition status</div>
                 <div className="flex flex-wrap gap-2">
                   {STATUS_TRANSITIONS.map((s) => (
                     <button
@@ -387,7 +387,7 @@ export default function AlertDetailPage() {
                       className={`rounded-lg border px-3 py-1.5 text-xs transition-colors ${
                         alert.status === s
                           ? 'border-orange-500/40 bg-orange-500/15 text-orange-300'
-                          : 'border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 disabled:opacity-50'
+                          : 'border-neutral-700 bg-neutral-900 text-neutral-300 hover:bg-neutral-800 disabled:opacity-50'
                       }`}
                     >
                       {busy === 'status-' + s ? '...' : s.replace('_', ' ')}
@@ -401,11 +401,11 @@ export default function AlertDetailPage() {
           {/* action log */}
           <Card>
             <CardHeader>
-              <h2 className="text-base font-semibold text-slate-100">Action log</h2>
+              <h2 className="text-base font-semibold text-neutral-100">Action log</h2>
             </CardHeader>
             <CardBody>
               {audit.length === 0 ? (
-                <p className="text-sm text-slate-500">No actions recorded for this alert yet.</p>
+                <p className="text-sm text-neutral-500">No actions recorded for this alert yet.</p>
               ) : (
                 <ol className="space-y-3">
                   {audit.map((ev: any, i: number) => (
@@ -413,15 +413,15 @@ export default function AlertDetailPage() {
                       <div className="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-orange-500" />
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2 text-sm">
-                          <span className="font-medium text-slate-200">{ev.action}</span>
-                          {ev.actor && <span className="text-xs text-slate-500">by {ev.actor}</span>}
+                          <span className="font-medium text-neutral-200">{ev.action}</span>
+                          {ev.actor && <span className="text-xs text-neutral-500">by {ev.actor}</span>}
                         </div>
                         {ev.detail && (
-                          <pre className="mt-1 overflow-x-auto rounded bg-slate-950/60 p-2 text-xs text-slate-400">
+                          <pre className="mt-1 overflow-x-auto rounded bg-neutral-950/60 p-2 text-xs text-neutral-400">
                             {typeof ev.detail === 'string' ? ev.detail : JSON.stringify(ev.detail, null, 2)}
                           </pre>
                         )}
-                        <span className="text-xs text-slate-600">
+                        <span className="text-xs text-neutral-600">
                           {ev.created_at ? new Date(ev.created_at).toLocaleString() : ''}
                         </span>
                       </div>
@@ -437,24 +437,24 @@ export default function AlertDetailPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <h2 className="text-base font-semibold text-slate-100">Deflection deadline</h2>
+              <h2 className="text-base font-semibold text-neutral-100">Deflection deadline</h2>
             </CardHeader>
             <CardBody>
               <DeadlineTimer deadline={alert.deadline_at} />
               <div className="mt-4 space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Received</span>
-                  <span className="text-slate-300">
+                  <span className="text-neutral-500">Received</span>
+                  <span className="text-neutral-300">
                     {alert.received_at ? new Date(alert.received_at).toLocaleString() : '—'}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">ARN</span>
-                  <span className="font-mono text-slate-300">{alert.arn ?? '—'}</span>
+                  <span className="text-neutral-500">ARN</span>
+                  <span className="font-mono text-neutral-300">{alert.arn ?? '—'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Card</span>
-                  <span className="text-slate-300">{alert.card_last4 ? `•••• ${alert.card_last4}` : '—'}</span>
+                  <span className="text-neutral-500">Card</span>
+                  <span className="text-neutral-300">{alert.card_last4 ? `•••• ${alert.card_last4}` : '—'}</span>
                 </div>
               </div>
             </CardBody>
@@ -462,7 +462,7 @@ export default function AlertDetailPage() {
 
           <Card>
             <CardHeader>
-              <h2 className="text-base font-semibold text-slate-100">Linked order</h2>
+              <h2 className="text-base font-semibold text-neutral-100">Linked order</h2>
             </CardHeader>
             <CardBody>
               {order ? (
@@ -474,28 +474,28 @@ export default function AlertDetailPage() {
                     {order.external_order_id ?? order.id?.slice(0, 8)}
                   </Link>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Product</span>
-                    <span className="text-slate-300">{order.product ?? '—'}</span>
+                    <span className="text-neutral-500">Product</span>
+                    <span className="text-neutral-300">{order.product ?? '—'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Amount</span>
-                    <span className="text-slate-300">{money(order.amount_cents, order.currency ?? currency)}</span>
+                    <span className="text-neutral-500">Amount</span>
+                    <span className="text-neutral-300">{money(order.amount_cents, order.currency ?? currency)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Margin</span>
-                    <span className="text-slate-300">{money(order.margin_cents, order.currency ?? currency)}</span>
+                    <span className="text-neutral-500">Margin</span>
+                    <span className="text-neutral-300">{money(order.margin_cents, order.currency ?? currency)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Recoverable</span>
+                    <span className="text-neutral-500">Recoverable</span>
                     <Badge tone={order.recoverable ? 'green' : 'slate'}>{order.recoverable ? 'yes' : 'no'}</Badge>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Refundable</span>
+                    <span className="text-neutral-500">Refundable</span>
                     <Badge tone={order.refundable ? 'green' : 'red'}>{order.refundable ? 'yes' : 'no'}</Badge>
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-slate-500">No order matched to this alert (by ARN / last4).</p>
+                <p className="text-sm text-neutral-500">No order matched to this alert (by ARN / last4).</p>
               )}
             </CardBody>
           </Card>
@@ -503,7 +503,7 @@ export default function AlertDetailPage() {
           {doubleRefund && doubleRefund.refunds?.length > 0 && (
             <Card>
               <CardHeader>
-                <h2 className="text-base font-semibold text-slate-100">Existing refunds</h2>
+                <h2 className="text-base font-semibold text-neutral-100">Existing refunds</h2>
               </CardHeader>
               <CardBody>
                 <Table>
@@ -546,11 +546,11 @@ export default function AlertDetailPage() {
       >
         <form onSubmit={onOverride} className="space-y-3">
           <div>
-            <label className="mb-1 block text-xs text-slate-400">New recommendation</label>
+            <label className="mb-1 block text-xs text-neutral-400">New recommendation</label>
             <select
               value={overrideRec}
               onChange={(e) => setOverrideRec(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-orange-500"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 outline-none focus:border-orange-500"
             >
               {['deflect', 'represent', 'reject', 'manual_review'].map((r) => (
                 <option key={r} value={r}>
@@ -560,13 +560,13 @@ export default function AlertDetailPage() {
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-xs text-slate-400">Reason (required)</label>
+            <label className="mb-1 block text-xs text-neutral-400">Reason (required)</label>
             <textarea
               value={overrideReason}
               onChange={(e) => setOverrideReason(e.target.value)}
               rows={3}
               placeholder="Why are you overriding the engine?"
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-orange-500"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 outline-none focus:border-orange-500"
             />
           </div>
         </form>
@@ -589,7 +589,7 @@ export default function AlertDetailPage() {
         }
       >
         <form onSubmit={onRefund} className="space-y-3">
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-neutral-400">
             Issuing a refund deflects this alert before it becomes a chargeback. This is idempotent per alert and is
             blocked if the order was already refunded.
           </p>
@@ -599,11 +599,11 @@ export default function AlertDetailPage() {
             </div>
           )}
           <div>
-            <label className="mb-1 block text-xs text-slate-400">Refund method</label>
+            <label className="mb-1 block text-xs text-neutral-400">Refund method</label>
             <select
               value={refundMethod}
               onChange={(e) => setRefundMethod(e.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-orange-500"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 outline-none focus:border-orange-500"
             >
               {['original_payment', 'store_credit', 'manual'].map((m) => (
                 <option key={m} value={m}>

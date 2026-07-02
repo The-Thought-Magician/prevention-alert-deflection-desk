@@ -189,8 +189,8 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-slate-100">Notifications</h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <h1 className="text-xl font-semibold text-neutral-100">Notifications</h1>
+          <p className="mt-1 text-sm text-neutral-400">
             Deadline warnings, ratio guardrail alerts, and deflection activity.
           </p>
         </div>
@@ -218,13 +218,13 @@ export default function NotificationsPage() {
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="inline-flex rounded-lg border border-slate-700 bg-slate-950 p-0.5">
+        <div className="inline-flex rounded-lg border border-neutral-700 bg-neutral-950 p-0.5">
           {(['all', 'unread', 'read'] as const).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium capitalize transition-colors ${
-                filter === f ? 'bg-orange-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                filter === f ? 'bg-orange-600 text-white' : 'text-neutral-400 hover:text-neutral-200'
               }`}
             >
               {f}
@@ -234,7 +234,7 @@ export default function NotificationsPage() {
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-200 focus:border-orange-500 focus:outline-none"
+          className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-1.5 text-sm text-neutral-200 focus:border-orange-500 focus:outline-none"
         >
           <option value="all">All types</option>
           {types.map((t) => (
@@ -268,10 +268,10 @@ export default function NotificationsPage() {
                     <div className="flex flex-wrap items-center gap-2">
                       {!n.is_read && <span className="inline-block h-2 w-2 rounded-full bg-orange-500" aria-hidden />}
                       {n.type && <Badge tone={typeTone(n.type)}>{n.type}</Badge>}
-                      <span className="text-sm font-semibold text-slate-100">{n.title ?? 'Notification'}</span>
-                      <span className="text-xs text-slate-500">{timeAgo(n.created_at)}</span>
+                      <span className="text-sm font-semibold text-neutral-100">{n.title ?? 'Notification'}</span>
+                      <span className="text-xs text-neutral-500">{timeAgo(n.created_at)}</span>
                     </div>
-                    {n.body && <p className="mt-1.5 text-sm text-slate-400">{n.body}</p>}
+                    {n.body && <p className="mt-1.5 text-sm text-neutral-400">{n.body}</p>}
                     {link && (
                       <a href={link} className="mt-2 inline-block text-xs font-medium text-orange-400 hover:text-orange-300">
                         View {n.entity_type} →
