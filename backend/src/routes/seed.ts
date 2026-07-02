@@ -82,6 +82,7 @@ router.post('/sample', authMiddleware, zValidator('json', bodySchema), async (c)
     customers: 0,
     orders: 0,
     alerts: 0,
+    decisions: 0,
     reason_codes: 0,
     rule_sets: 0,
     thresholds: 0,
@@ -253,6 +254,14 @@ router.post('/sample', authMiddleware, zValidator('json', bodySchema), async (c)
 
   // ── Alerts across all 3 networks ──────────────────────────────────────
   const statuses = ['new', 'triaging', 'decided', 'action_pending', 'deflected'] as const
+  // Statuses that imply a decision has already been made for the alert. Any alert seeded
+  // with one of these statuses must have a matching `decisions` row, otherwise the alert
+  // detail page shows a "decided"/"deflected" badge next to a "no decision yet" panel.
+  const DECIDED_STATUSES = new Set<(typeof statuses)[number]>(['decided', 'deflected'])
+  const RECOMMENDATION_BY_STATUS: Record<string, string> = {
+    decided: 'REVIEW',
+    deflected: 'REFUND_DEFLECT',
+  }
   for (let i = 0; i < 18; i++) {
     const network = NETWORKS[i % NETWORKS.length]
     const networkCodes = REASON_CATALOG.filter((r) => r.network === network)
@@ -261,27 +270,57 @@ router.post('/sample', authMiddleware, zValidator('json', bodySchema), async (c)
     const receivedAt = new Date(now - (18 - i) * 3_600_000)
     const deadlineAt = new Date(receivedAt.getTime() + 72 * 3_600_000)
     const orderAmount = 1999 + orderIdx * 1100
-    await db.insert(alerts).values({
-      workspace_id,
-      order_id: orderIds[orderIdx],
-      customer_id: pick(customerIds, orderIdx),
-      network,
-      alert_type: ALERT_TYPE_BY_NETWORK[network],
-      external_alert_id: `${network.toUpperCase()}-ALERT-${7000 + i}`,
-      arn: orderArns[orderIdx],
-      card_last4: orderLast4[orderIdx],
-      amount_cents: orderAmount,
-      currency: 'USD',
-      reason_code: rc.code,
-      reason_category: rc.category,
-      status: pick([...statuses], i),
-      received_at: receivedAt,
-      deadline_at: deadlineAt,
-      is_duplicate: false,
-      raw_payload: { source: 'sample', network },
-      created_by: userId,
-    })
+    const status = pick([...statuses], i)
+    const [alert] = await db
+      .insert(alerts)
+      .values({
+        workspace_id,
+        order_id: orderIds[orderIdx],
+        customer_id: pick(customerIds, orderIdx),
+        network,
+        alert_type: ALERT_TYPE_BY_NETWORK[network],
+        external_alert_id: `${network.toUpperCase()}-ALERT-${7000 + i}`,
+        arn: orderArns[orderIdx],
+        card_last4: orderLast4[orderIdx],
+        amount_cents: orderAmount,
+        currency: 'USD',
+        reason_code: rc.code,
+        reason_category: rc.category,
+        status,
+        received_at: receivedAt,
+        deadline_at: deadlineAt,
+        is_duplicate: false,
+        raw_payload: { source: 'sample', network },
+        created_by: userId,
+      })
+      .returning()
     counts.alerts++
+
+    if (DECIDED_STATUSES.has(status)) {
+      const [existingDecision] = await db
+        .select()
+        .from(decisions)
+        .where(and(eq(decisions.workspace_id, workspace_id), eq(decisions.alert_id, alert.id)))
+      if (!existingDecision) {
+        const recommendation = RECOMMENDATION_BY_STATUS[status] ?? 'REVIEW'
+        const score = 0.6 + ((i % 5) * 0.08)
+        await db.insert(decisions).values({
+          workspace_id,
+          alert_id: alert.id,
+          recommendation,
+          score,
+          factors: [
+            { name: 'deflectability', value: rc.typical_deflectability, weight: 0.5, contribution: rc.typical_deflectability * 0.5 },
+            { name: 'reason_category_weight', value: 1, weight: 0.3, contribution: 0.3 },
+            { name: 'customer_risk', value: 0.1, weight: 0.2, contribution: 0.1 },
+          ],
+          is_override: false,
+          override_reason: null,
+          decided_by: userId,
+        })
+        counts.decisions++
+      }
+    }
   }
 
   // ── Ratio snapshots (last 3 periods, overall) ─────────────────────────
